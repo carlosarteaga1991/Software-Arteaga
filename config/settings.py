@@ -1,5 +1,5 @@
 """
-Software-ArtePort
+Software-ArtPort
 Fecha: 06 de abril del 2021 hora: 20:13 pm
 Última modificación a código
 """
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # Aplicaciones
     'core.homepage',
+    'core.RRHH',
+    'core.Usuario',
 ]
 
 MIDDLEWARE = [
@@ -106,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# esto es para sustituir el nuevo modelo personalizado
+# Esto es para sustituir el nuevo modelo personalizado
 # AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Internationalization
