@@ -1,0 +1,131 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SoftArtPor | Login</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- librería de alertas -->
+  <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+
+    <!-- Favicons -->
+  <link href="{% static 'img/logo_ti.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class="" style="-ms-flex-align:center;align-items:center;background:#ffff;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;height:100vh;-ms-flex-pack:center;justify-content:center">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h2><strong>Soft</strong><a href="{{ btn_cancelar }}"><span>ArtPort </span></a></h2>
+
+    </div>
+  </header><!-- End Header -->
+
+<div class="login-box" style="">
+    <div class="login-logo">
+        <a href="{{ btn_cancelar }}" style="color:black;"><b>Log</b>In</a>
+    </div>
+    <div class="">
+        <div class="card-body login-card-body">
+            <!--<p class="login-box-msg">Ingrese sus credenciales</p>-->
+            <form action="." method="post">
+            <!-- esto para recibir la variable NEXT en caso q no esté loggeado y quiera ingresar a una URL, al iniciar sesión le dirigirá a esa página q deseaba ingresar -->
+                <input type="hidden" name="next" value="{{ next }}"> 
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i>&nbsp;&nbsp;Ingresar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="social-auth-links text-left">
+            <a href="#" style="color:blue;  font-size:12px;">Olvidé mi Contraseña</a>
+        </div>
+        
+    </div>
+    
+        {% if form.errors %}
+
+           <!-- {% if forms.ValidationError %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  forms.ValidationError }}<strong>!</strong>
+                </div>
+                {% for error in forms.ValidationError.error_messages %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>¡</strong> {{  error }}<strong>!</strong>
+                </div>                
+                {% endfor %}
+            {% endif %}-->
+                                
+                        
+
+            <div class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>¡</strong> Usuario y/o contraseña inválidos. <strong>!</strong>
+                          </div>
+        {% endif %}
+    
+</div>
+<!-- jQuery -->
+<script src="{% static 'lib/adminlte-3.0.5/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'lib/adminlte-3.0.5/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'lib/adminlte-3.0.5/js/adminlte.min.js' %}"></script>
+
+</body>
+</html>
+

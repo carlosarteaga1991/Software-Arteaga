@@ -36,12 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # Librerías
+    'widget_tweaks',
 
     # Aplicaciones
     'core.homepage',
     'core.RRHH',
     'core.Usuario',
+    'core.login',
 ]
 
 MIDDLEWARE = [
@@ -109,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Esto es para sustituir el nuevo modelo personalizado
-# AUTH_USER_MODEL = 'usuario.Usuario'
+AUTH_USER_MODEL = 'Usuario.usuario'
 
 # Internationalization
 
@@ -131,20 +134,20 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = 'staticfiles'
 
 # declaración de variable para usar archivos estáticos
-"""
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), # _global
 ]
-"""
+
 
 # para el login hay q indicarle a que URL nos dirigirá si es exitoso
 #LOGIN_REDIRECT_URL = '/cobros/dashboard/'
 
 # para q direcciones en caso de darle salir sesión
-#LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # en caso de querer ingresar a una URL ya existente y no está loggeado un usuario que me direccione a:
-#LOGIN_URL = '/login/'
+LOGIN_URL = '/login/'
 
 # Para alojar nuestros archivos media usamos:
 #MEDIA_URL = '/media/'
