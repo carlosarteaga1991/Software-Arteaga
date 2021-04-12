@@ -14,5 +14,5 @@ urlpatterns = [
     path('',login.as_view(), name='ingresar'),
     path('logout/',LogoutView.as_view(), name='salir'),
     path('reset/password/',resetear_contrasenia.as_view(), name='resetear_password'),
-    
+    path('cambiar/contrasenia/<str:token>/',cambiar_resetear_contrasenia.as_view(), name='cambiar_password'),
 ]

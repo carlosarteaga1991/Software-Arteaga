@@ -11,7 +11,7 @@ from core.homepage.views import IndexView
 from config.test import *
 
 # Importanto para login
-from core.login.views import login
+from core.login.views import *
 
 # Importanto para inicio usuario
 from core.Usuario.urls import *
@@ -31,5 +31,8 @@ urlpatterns = [
     # Para pantalla inicial luego de iniciar sesión de Usuario
     path('perfil/',include('core.Usuario.urls'), name='perfil_inicio'),
 
+    # Link para pruebas borrar en producción
     path('prueba/', vista_prueba.as_view()),
+
+    
 ]

@@ -27,6 +27,10 @@ from email.mime.text import MIMEText
 from django.template.loader import render_to_string
 from core.Usuario.models import *
 
+# Para generar token único
+import uuid
+from django.db import models
+
 class login(LoginView):
     template_name = 'login.html'
 
@@ -66,6 +70,13 @@ class resetear_contrasenia(FormView):
     def send_email_reset_pwd(self, usuario_email):
         data = {}
         try:
+            # Para obtener el dominio completo 
+            URL = DOMAIN if not DEBUG else self.request.META['HTTP_HOST']
+            
+            # Para generar el token único de cambio de contraseña
+            usuario_email.token = uuid.uuid4()
+            usuario_email.save()
+
             mailServer = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
             mailServer.starttls()
             mailServer.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
@@ -78,7 +89,7 @@ class resetear_contrasenia(FormView):
 
             content = render_to_string('reset_send_email.html', {
                 'usuario': usuario_email,#usuario.objects.get(pk=1),
-                'link_resetpwd': 'https://www.youtube.com/',
+                'link_resetpwd': 'http://{}/login/cambiar/contrasenia/{}/'.format(URL, str(usuario_email.token)),
                 'link_home': ''
             })
             mensaje.attach(MIMEText(content, 'html'))
@@ -89,6 +100,60 @@ class resetear_contrasenia(FormView):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+    # procedemos a sobre escribir el método POST
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = form_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
+            if form.is_valid():
+                #print(request.POST) # probando si llega el usuario
+                usuario_email = form.get_user()
+                data = self.send_email_reset_pwd(usuario_email)
+                data['exitoso'] = 'si'
+            else:
+                data['error'] = form.errors
+            #si se está ysando CreateView colocar
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['form'] = form
+            context['errores']=form.errors
+            context['exitoso'] = data['exitoso']
+        except Exception as e:
+            data['error'] = str(e)
+        return render(request, self.template_name, context)
+        #return JsonResponse(data, safe=False)
+
+    def form_valid(self, form):
+        pass
+        return HttpResponseRedirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Reseteo de Contraseña'
+        context['btn_cancelar'] = reverse_lazy('pagina_web')
+        context['login_url']= reverse_lazy('login:ingresar')
+        
+        return context
+
+class cambiar_resetear_contrasenia(FormView):
+    form_class = form_link_reseteo_contrasenia
+    template_name = 'cambiar_nueva_contrasenia.html'
+    success_url = reverse_lazy('login:ingresar')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        # en caso que el usuario esté loggeado mandar a perfil
+        if request.user.is_authenticated:
+            return redirect('usuario:inicio')
+        return super().dispatch(request,*args,**kwargs)
+    
+    # Sobreescribimos el método get para ver si es válida y existe el token enviado sino mandarlo al login
+    def dispatch(self, request,*args,**kwargs):
+        token = self.kwargs['token']
+        if usuario.objects.filter(token=token).exists():
+            return redirect('usuario:inicio')
+        return HttpResponseRedirect(self.success_url)
 
     # procedemos a sobre escribir el método POST
     def post(self, request, *args, **kwargs):

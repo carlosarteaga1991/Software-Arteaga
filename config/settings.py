@@ -166,3 +166,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'carteaga338@gmail.com'
 
 EMAIL_HOST_PASSWORD = 'C@rl1t0sartp.r'
+
+# En producción colocar la url total 
+DOMAIN = ''

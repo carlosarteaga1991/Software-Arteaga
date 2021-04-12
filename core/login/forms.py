@@ -40,3 +40,35 @@ class form_reseteo_contrasenia(forms.Form):
     def get_user(self):
         username = self.cleaned_data.get('username')
         return usuario.objects.get(username=username)
+
+class form_link_reseteo_contrasenia(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'placeholder': 'Ingrese su nueva contraseña',
+            'class': 'form-control',
+            'autocomplete': 'false'
+        }
+    ))
+
+    confirmar_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'placeholder': 'Confirme su nueva contraseña',
+            'class': 'form-control',
+            'autocomplete': 'false'
+        }
+    ))
+
+    # sobre escribimos el método clean para validar si el usuario existe
+    def clean(self):
+        cleaned = super().clean()
+        if not usuario.objects.filter(username=cleaned['username']).exists():
+            #para  mostrar los errores para quitarle '_all_'
+            self._errors['error'] = self._errors.get('error', self.error_class())
+            self._errors['error'].append('El usuario no existe')
+            #raise forms.ValidationError('El usuario no existe')
+        return cleaned
+
+    # El siguiente método es para obtener el usuario
+    def get_user(self):
+        username = self.cleaned_data.get('username')
+        return usuario.objects.get(username=username)

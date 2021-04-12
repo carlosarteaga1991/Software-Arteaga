@@ -96,6 +96,8 @@ class usuario(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     #is_staff = models.BooleanField(default = False) #esto es si puede ingresar al sitio de administración de DJANGO
     objects = UsuarioManager()
+    #este campo de token se crea para la parte de reseteo de contraseña x link
+    token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email','nombres','id_departamento','id_puesto']
