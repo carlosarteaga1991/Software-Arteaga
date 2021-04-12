@@ -78,7 +78,7 @@ class resetear_contrasenia(FormView):
 
             content = render_to_string('reset_send_email.html', {
                 'usuario': usuario_email,#usuario.objects.get(pk=1),
-                'link_resetpwd': 'www.youtube.com',
+                'link_resetpwd': 'https://www.youtube.com/',
                 'link_home': ''
             })
             mensaje.attach(MIMEText(content, 'html'))
