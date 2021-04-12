@@ -34,6 +34,7 @@ class empresas(models.Model):
 
 class departamentos(models.Model):
     id_departamento = models.AutoField(primary_key=True)
+    id_empresa = models.ForeignKey(empresas, on_delete=models.PROTECT) 
     nombre = models.CharField('Nombre',max_length=100, unique=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.IntegerField(blank=True,null=True)

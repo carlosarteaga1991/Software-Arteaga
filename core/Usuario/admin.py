@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from core.RRHH.models import *
-from core.Usuario.models import usuario
+from core.Usuario.models import *
 
 #para agregar filtros en el panel de administración
 class filtroDepartamentos(admin.ModelAdmin):
@@ -17,3 +17,6 @@ admin.site.register(usuario)
 admin.site.register(puestos)
 admin.site.register(departamentos, filtroDepartamentos)
 admin.site.register(empresas)
+admin.site.register(roles)
+admin.site.register(permisos)
+admin.site.register(pantallas)

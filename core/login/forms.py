@@ -36,6 +36,7 @@ class form_reseteo_contrasenia(forms.Form):
             #raise forms.ValidationError('El usuario no existe')
         return cleaned
 
+    # El siguiente método es para obtener el usuario
     def get_user(self):
         username = self.cleaned_data.get('username')
-        return User.objects.get(username=username)
+        return usuario.objects.get(username=username)

@@ -19,6 +19,13 @@ from django.contrib.messages import *
 # Importanto para el formulario a usar
 from core.login.forms import *
 
+# para enviar correo
+from config.settings import *
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from django.template.loader import render_to_string
+from core.Usuario.models import *
 
 class login(LoginView):
     template_name = 'login.html'
@@ -29,7 +36,7 @@ class login(LoginView):
 
     def dispatch(self, request,*args,**kwargs):
         if request.user.is_authenticated:
-            return redirect('crm:listar_departamento')
+            return redirect('usuario:inicio')
         return super().dispatch(request,*args,**kwargs)
 
 
@@ -51,18 +58,48 @@ class resetear_contrasenia(FormView):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request,*args,**kwargs):
+        # en caso que el usuario esté loggeado mandar a perfil
+        if request.user.is_authenticated:
+            return redirect('usuario:inicio')
         return super().dispatch(request,*args,**kwargs)
+
+    def send_email_reset_pwd(self, usuario_email):
+        data = {}
+        try:
+            mailServer = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+            mailServer.starttls()
+            mailServer.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+
+            email_to = usuario_email.email
+            mensaje = MIMEMultipart()
+            mensaje['From'] = EMAIL_HOST_USER
+            mensaje['To'] = email_to
+            mensaje['Subject'] = 'Reseteo de Contraseña'
+
+            content = render_to_string('reset_send_email.html', {
+                'usuario': usuario_email,#usuario.objects.get(pk=1),
+                'link_resetpwd': 'www.youtube.com',
+                'link_home': ''
+            })
+            mensaje.attach(MIMEText(content, 'html'))
+
+            mailServer.sendmail(EMAIL_HOST_USER,
+                                email_to,
+                                mensaje.as_string())
+        except Exception as e:
+            data['error'] = str(e)
+        return data
 
     # procedemos a sobre escribir el método POST
     def post(self, request, *args, **kwargs):
         data = {}
-        
         try:
             form = form_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
             if form.is_valid():
-                data['exitoso'] = si
-                #user = form.get_user()
-                #data = self.send_email_reset_pwd(user)
+                #print(request.POST) # probando si llega el usuario
+                usuario_email = form.get_user()
+                data = self.send_email_reset_pwd(usuario_email)
+                data['exitoso'] = 'si'
             else:
                 data['error'] = form.errors
             #si se está ysando CreateView colocar
@@ -70,7 +107,7 @@ class resetear_contrasenia(FormView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             context['errores']=form.errors
-            context[exitoso] = data['exitoso']
+            context['exitoso'] = data['exitoso']
         except Exception as e:
             data['error'] = str(e)
         return render(request, self.template_name, context)

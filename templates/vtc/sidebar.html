@@ -1,0 +1,155 @@
+{% load static %}
+<aside class="main-sidebar sidebar-light-primary elevation-4">
+    <a href="#" class="brand-link">&nbsp;&nbsp;&nbsp;     
+        <!--<img src="{% static 'img/logo.png' %}"
+             alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3"
+             style="opacity: .8">-->
+             <i class="far fa-handshake " style="opacity: .8"></i>
+        <span class="brand-text font-weight-light">  SoftArteaga</span>
+    </a>
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ nombre }}</a>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!--<li class="nav-header">Mantenimientos</li>-->
+                <!--<li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-truck-loading"></i>
+                        <p>
+                            Departamentos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Puestos
+                        </p>
+                    </a>
+                </li>-->
+
+                <!-- Primer Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-truck-loading"></i>
+                    <p>
+                        Administración
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Departamentos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Puestos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Empresas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Clientes</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Códigos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Motivos</p>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                <!-- /. Primer Segmento -->
+
+                <!-- Segundo Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Monitoreo
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>uno</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>dos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>tres</p>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                <!-- /. Segundo Segmento -->
+                
+                <!-- tercer Segmento -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link"><i class="nav-icon fas fa-id-card"></i>
+                    <p>
+                         Reporteria
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>uno</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>dos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>tres</p>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                <!-- /. tercer Segmento -->
+            </ul>
+        </nav>
+        
+    </div>
+</aside>

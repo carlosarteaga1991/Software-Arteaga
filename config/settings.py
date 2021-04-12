@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django.contrib.humanize',
     # Librerías
     'widget_tweaks',
 
@@ -141,7 +141,7 @@ STATICFILES_DIRS = [
 
 
 # para el login hay q indicarle a que URL nos dirigirá si es exitoso
-#LOGIN_REDIRECT_URL = '/cobros/dashboard/'
+LOGIN_REDIRECT_URL = '/perfil/usuario/'
 
 # para q direcciones en caso de darle salir sesión
 LOGOUT_REDIRECT_URL = '/login/'
@@ -157,3 +157,12 @@ LOGIN_URL = '/login/'
 
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #creamos la URL absoluta para acceder
+
+# Para envío de correo en producción usar variables globales
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'carteaga338@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'C@rl1t0sartp.r'

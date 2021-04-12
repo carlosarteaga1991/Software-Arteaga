@@ -79,7 +79,7 @@
 
       
       {% if request.user.is_authenticated %}
-          <a href="{% url 'crm:dashboard' %}" class="get-started-btn scrollto"> <i class="bx bx-user"></i> Bienvenido <strong>{{ request.user.username }}</strong> </a> 
+          <a href="{% url 'usuario:inicio' %}" class="get-started-btn scrollto"> <i class="bx bx-user"></i> Bienvenido <strong>{{ request.user.username }}</strong> </a> 
       {% else %}
           <a href="{{ login_url }}" class="get-started-btn scrollto"></i> <strong>Ingresar</strong></a><!--<i class="ri-login-box-line">-->
       {% endif %}

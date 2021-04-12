@@ -1,0 +1,16 @@
+{% load static %}
+
+  <!-- Main Footer -->
+  {% if context.quitar_footer == 'si' or quitar_footer == 'si' %}
+  
+  {% else %}
+  
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+      Creamos lo que necesites.
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2020 <a href="https://adminlte.io">SoftwareArteaga</a>.</strong> Todos los derechos reservados.
+  </footer>
+  {% endif %}
