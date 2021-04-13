@@ -15,6 +15,7 @@ from django.urls import reverse_lazy
 from config.urls import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.messages import *
+from datetime import datetime
 
 # Importanto para el formulario a usar
 from core.login.forms import *
@@ -152,19 +153,24 @@ class cambiar_resetear_contrasenia(FormView):
     def dispatch(self, request,*args,**kwargs):
         token = self.kwargs['token']
         if usuario.objects.filter(token=token).exists():
-            return redirect('usuario:inicio')
+            return super().dispatch(request,*args,**kwargs)
         return HttpResponseRedirect(self.success_url)
 
     # procedemos a sobre escribir el método POST
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            form = form_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
+            # Creamos una instancia del formulario
+            form = form_link_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
             if form.is_valid():
-                #print(request.POST) # probando si llega el usuario
-                usuario_email = form.get_user()
-                data = self.send_email_reset_pwd(usuario_email)
-                data['exitoso'] = 'si'
+                user = usuario.objects.get(token=self.kwargs['token'])
+                user.set_password(request.POST['password'])
+                user.usuario_modificacion = user.id
+                user.fch_modificacion = datetime.now()
+                user.fch_cambio_password = datetime.now()
+                user.token = uuid.uuid4()
+                user.save()
+                data['reseteo_contrasenia'] = 'si'
             else:
                 data['error'] = form.errors
             #si se está ysando CreateView colocar
@@ -172,7 +178,7 @@ class cambiar_resetear_contrasenia(FormView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             context['errores']=form.errors
-            context['exitoso'] = data['exitoso']
+            context['reseteo_contrasenia'] = data['reseteo_contrasenia']
         except Exception as e:
             data['error'] = str(e)
         return render(request, self.template_name, context)
@@ -184,7 +190,7 @@ class cambiar_resetear_contrasenia(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['plantilla'] = 'Reseteo de Contraseña'
+        context['plantilla'] = 'Cambiar de Contraseña'
         context['btn_cancelar'] = reverse_lazy('pagina_web')
         context['login_url']= reverse_lazy('login:ingresar')
         

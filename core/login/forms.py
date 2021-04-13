@@ -46,25 +46,37 @@ class form_link_reseteo_contrasenia(forms.Form):
         attrs={
             'placeholder': 'Ingrese su nueva contraseña',
             'class': 'form-control',
-            'autocomplete': 'false'
+            'autocomplete': 'false',
+            'id': 'pass',
+            'minlength': '8',
+            'maxlength': '25',
+            #'onkeyup': 'caracteresContrasenia(value)'
         }
     ))
 
     confirmar_password = forms.CharField(widget=forms.PasswordInput(
         attrs={
-            'placeholder': 'Confirme su nueva contraseña',
+            'placeholder': 'Confirme su contraseña',
             'class': 'form-control',
-            'autocomplete': 'false'
+            'autocomplete': 'false',
+            'id': 'pass2',
+            'onkeyup': 'validarContrasenia(value)',
+            'minlength': '8',
+            'maxlength': '25'
         }
     ))
 
     # sobre escribimos el método clean para validar si el usuario existe
     def clean(self):
         cleaned = super().clean()
-        if not usuario.objects.filter(username=cleaned['username']).exists():
+        # Optenemos las contraseñas ingresadas por el usuario
+        password = cleaned['password']
+        confirmar_password = cleaned['confirmar_password']
+
+        if password != confirmar_password:
             #para  mostrar los errores para quitarle '_all_'
             self._errors['error'] = self._errors.get('error', self.error_class())
-            self._errors['error'].append('El usuario no existe')
+            self._errors['error'].append('Las contraseñas no son iguales')
             #raise forms.ValidationError('El usuario no existe')
         return cleaned
 

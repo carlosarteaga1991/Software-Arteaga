@@ -7,6 +7,8 @@ Fecha: 06 de abril del 2021 hora: 20:13 pm
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 # Para las imagenes:
 #from config.settings import MEDIA_URL,STATIC_URL
 
@@ -133,6 +135,9 @@ class pantallas(models.Model):
     class Meta:
         verbose_name_plural = "pantallas"
         ordering = ['id_pantalla']
+    
+    def __str__(self):
+        return self.nombre
 
 class permisos(models.Model):
     id_permiso = models.AutoField(primary_key=True)
@@ -159,4 +164,21 @@ class permisos(models.Model):
     class Meta:
         verbose_name_plural = "permisos"
         ordering = ['id_permiso']
+
+class politicas_contrasenia(models.Model):
+    id_politica = models.AutoField(primary_key=True)
+    dias_expiracion_contrasenia = models.IntegerField(default=30,validators=[MinValueValidator(30), MaxValueValidator(360)],verbose_name="Días de Expiración")
+    longitud_minima_contrasenia = models.IntegerField(default=8,validators=[MinValueValidator(8), MaxValueValidator(25)],verbose_name="Longitud Mínima")
+    longitud_maxima_contrasenia = models.IntegerField(default=25,validators=[MinValueValidator(25), MaxValueValidator(50)],verbose_name="Longitud Máxima")
+    complejidad_contrasenia = models.CharField(max_length=1, default='4',
+    choices=[('1','Incluir letras mayúsculas y minúsculas, números y caracteres especiales'),
+             ('2','Incluir letras mayúsculas y minúsculas, números'),
+             ('3','Incluir letras minúsculas, números'),
+             ('4','Sin Restricciones')],verbose_name="Complejidad de Contraseña")
+    intentos_sesion_maximo = models.IntegerField(default=3,validators=[MinValueValidator(3), MaxValueValidator(10)],verbose_name="Intentos Máximos de Inicio de Sesión")
+    fch_creacion = models.DateTimeField(auto_now_add=True)
+    usuario_creacion = models.IntegerField(blank=True,null=True)
+    fch_modificacion = models.CharField(max_length=35, blank=True)
+    usuario_modificacion = models.IntegerField(blank=True,null=True)
+
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core.RRHH',
     'core.Usuario',
     'core.login',
+    'core.Auditoria',
 ]
 
 MIDDLEWARE = [

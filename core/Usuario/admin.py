@@ -5,6 +5,7 @@ from django.contrib import admin
 from core.RRHH.models import *
 from core.Usuario.models import *
 
+
 #para agregar filtros en el panel de administración
 class filtroDepartamentos(admin.ModelAdmin):
     list_display = ("nombre","usuario_creacion","estado") # esto para mostrar sólo algunos campos
@@ -20,3 +21,4 @@ admin.site.register(empresas)
 admin.site.register(roles)
 admin.site.register(permisos)
 admin.site.register(pantallas)
+admin.site.register(politicas_contrasenia)

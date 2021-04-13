@@ -96,7 +96,15 @@
         </div>
         
     </div>
-    
+
+        {% if reseteo_contrasenia == "si" %}
+            <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-check"></i> ¡Cambio exitoso!</h5>
+                            Se ha reseteado su contraseña.
+            </div>
+        {% endif %}
+
         {% if form.errors %}
 
            <!-- {% if forms.ValidationError %}
