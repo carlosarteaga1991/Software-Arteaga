@@ -32,6 +32,9 @@ from core.Usuario.models import *
 import uuid
 from django.db import models
 
+# Importar para alimentar log
+from core.Auditoria.trigger_log import trigger
+
 class login(LoginView):
     template_name = 'login.html'
 
@@ -163,7 +166,9 @@ class cambiar_resetear_contrasenia(FormView):
             # Creamos una instancia del formulario
             form = form_link_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
             if form.is_valid():
+                #para log
                 user = usuario.objects.get(token=self.kwargs['token'])
+                x = trigger.guardar(str(user.nombres), "usuario",str(user.id),"Reseteo Contraseña",str(user.password),str(user.password),"password",trigger.get_ip(request),trigger.get_name(request))
                 user.set_password(request.POST['password'])
                 user.usuario_modificacion = user.id
                 user.fch_modificacion = datetime.now()

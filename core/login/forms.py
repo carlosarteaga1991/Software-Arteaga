@@ -16,6 +16,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.urls import reverse_lazy
 
+from core.Usuario.models import *
+
 
 class form_reseteo_contrasenia(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
@@ -42,14 +44,15 @@ class form_reseteo_contrasenia(forms.Form):
         return usuario.objects.get(username=username)
 
 class form_link_reseteo_contrasenia(forms.Form):
+    polit_contrasenia = politicas_contrasenia.objects.get()
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={
             'placeholder': 'Ingrese su nueva contraseña',
             'class': 'form-control',
             'autocomplete': 'false',
             'id': 'pass',
-            'minlength': '8',
-            'maxlength': '25',
+            'minlength': polit_contrasenia.longitud_minima_contrasenia,
+            'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
             #'onkeyup': 'caracteresContrasenia(value)'
         }
     ))
@@ -61,8 +64,8 @@ class form_link_reseteo_contrasenia(forms.Form):
             'autocomplete': 'false',
             'id': 'pass2',
             'onkeyup': 'validarContrasenia(value)',
-            'minlength': '8',
-            'maxlength': '25'
+            'minlength': polit_contrasenia.longitud_minima_contrasenia,
+            'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
         }
     ))
 
