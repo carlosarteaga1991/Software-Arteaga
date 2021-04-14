@@ -3,6 +3,19 @@ Archivo para alimentar cada acción por pantalla
 se hace de esta manera ya que los Triggers varían su creación en cada base de datos
 y pensando a futuro en caso que se cambie el proveedor de base de datos.
 13 de abril 2021.
+
+Por ahora ya que los log son impactados desde el ORM de django
+se especifica para los tipos de acciones los siguientes:
+Ingreso Exitoso
+Ingreso Fallido
+Usuario Bloqueado
+Insertar
+Modificar
+Consultar
+Borrar
+Cerrar Sesión
+Envío Correo Reseteo de Contraseña
+Reseteo de Contraseña
 """
 
 from datetime import date, datetime

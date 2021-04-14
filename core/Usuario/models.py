@@ -106,6 +106,10 @@ class usuario(AbstractBaseUser):
 
     def __str__(self):
         return self.username
+
+    class Meta:
+        verbose_name_plural = "usuarios"
+        ordering = ['id']
     
     #para traer la ruta absoluta de imagenes usamos
     """

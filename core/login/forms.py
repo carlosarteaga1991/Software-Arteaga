@@ -87,3 +87,4 @@ class form_link_reseteo_contrasenia(forms.Form):
     def get_user(self):
         username = self.cleaned_data.get('username')
         return usuario.objects.get(username=username)
+
