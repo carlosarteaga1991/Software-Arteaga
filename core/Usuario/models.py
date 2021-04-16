@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Para las imagenes:
-#from config.settings import MEDIA_URL,STATIC_URL
+from config.settings import MEDIA_URL,STATIC_URL
 
 class roles(models.Model):
     id_rol = models.AutoField(primary_key=True)
@@ -69,7 +69,8 @@ class usuario(AbstractBaseUser):
     email = models.EmailField('Correo Electrónico', max_length=70,unique=True)
     nombres = models.CharField('Nombres',max_length=30,blank= True, null = True)
     apellidos = models.CharField('Apellidos',max_length=30,blank= True, null = True)
-    #imagen_perfil = models.ImageField('Imagen de Perfil',upload_to='perfil/%Y/%m/%d',height_field=None, width_field=None, max_length=200,blank=True, null=True)
+    imagen_perfil = models.ImageField('Imagen de Perfil',upload_to='perfil/%Y/%m/%d',height_field=None, width_field=None, max_length=200,blank=True, null=True)
+    fch_ingreso_labores = models.DateTimeField('Fecha de Ingreso a Laborar',blank= True, null = True)
     #al usar imagenes instakar # pip3 install pillow
     #antes de realizar las primeras migraciones es bueno definir el modelo usurio
     #después hacemos makemigrations y migrate
@@ -80,9 +81,7 @@ class usuario(AbstractBaseUser):
     ip_ultimo_acceso = models.CharField(max_length=50, blank=True)
     fch_ultimo_login = models.CharField(max_length=70, blank=True)
     fch_ultimo_cambio_contrasenia = models.CharField(max_length=70, blank=True)
-    #fch_expiracion_contrasenia
-    #crear tabla de políticas de contraseña
-    #crear tabla de historial de contraseñas
+    intentos_fallidos = models.IntegerField(default=0)
     usuario_creacion = models.IntegerField(blank=True, null=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
     fch_modificacion = models.DateTimeField(null=True)
@@ -111,13 +110,12 @@ class usuario(AbstractBaseUser):
         verbose_name_plural = "usuarios"
         ordering = ['id']
     
-    #para traer la ruta absoluta de imagenes usamos
-    """
+    # Para traer la ruta absoluta de imagenes usamos
     def get_image(self):
         if self.imagen_perfil:
             return '{}{}'.format(MEDIA_URL, self.imagen_perfil)
-        return '{}{}'.format(STATIC_URL, 'img/empty.png')
-    """
+        return '{}{}'.format(STATIC_URL, 'img/usuario_sin_foto.jpeg')
+    
 
 
     #estos de abajo se borran si se usa PermisionMixin

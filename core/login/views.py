@@ -16,6 +16,7 @@ from config.urls import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.messages import *
 from datetime import datetime
+from django.contrib.auth.hashers import make_password
 
 # Importanto para el formulario a usar
 from core.login.forms import *
@@ -46,7 +47,7 @@ class login(LoginView):
     def dispatch(self, request,*args,**kwargs):
         if request.user.is_authenticated:
             # Para log
-            #x = trigger.guardar(str(request.user.nombres) + " " + str(request.user.apellidos), "usuario",str(request.user.id),"Ingreso Exitoso","","","username",trigger.get_ip(request),trigger.get_name(request))
+            #x = trigger.guardar(str(request.user.nombres) + " " + str(request.user.apellidos), "usuario",str(request.user.id),"Ingreso Exitoso","","","username",trigger.get_ip(request),str(usuario_email.username))
             return redirect('usuario:inicio')
         return super().dispatch(request,*args,**kwargs)
 
@@ -119,7 +120,7 @@ class resetear_contrasenia(FormView):
                 data = self.send_email_reset_pwd(usuario_email)
                 data['exitoso'] = 'si'
                 # Para log
-                x = trigger.guardar(str(usuario_email.nombres) + " " + str(usuario_email.apellidos), "usuario",str(usuario_email.id),"Envío Correo Reseteo de Contraseña",str(usuario_email.email),"","email",trigger.get_ip(request),trigger.get_name(request))
+                x = trigger.guardar(str(usuario_email.nombres) + " " + str(usuario_email.apellidos), "usuario",str(usuario_email.id),"Envío Correo Reseteo de Contraseña",str(usuario_email.email),"","email",trigger.get_ip(request),str(usuario_email.username))
             else:
                 data['error'] = form.errors
             #si se está ysando CreateView colocar
@@ -171,14 +172,17 @@ class cambiar_resetear_contrasenia(FormView):
             # Creamos una instancia del formulario
             form = form_link_reseteo_contrasenia(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
             if form.is_valid():
-                #user = usuario.objects.get(token=self.kwargs['token'])
+                user = usuario.objects.get(token=self.kwargs['token'])
                 # Para log
-                x = trigger.guardar(str(user.nombres) + " " + str(user.apellidos), "usuario",str(user.id),"Reseteo Contraseña",str(user.password),str(user.password),"password",trigger.get_ip(request),trigger.get_name(request))
+                x = trigger.guardar(str(user.nombres) + " " + str(user.apellidos), "usuario",str(user.id),"Reseteo Contraseña",str(user.password),make_password(request.POST['password']),"password",trigger.get_ip(request),str(user.username))
+                x2 = trigger.guardar_historial_pass(make_password(request.POST['password']),trigger.get_ip(request),int(user.id))
                 user.set_password(request.POST['password'])
                 user.usuario_modificacion = user.id
                 user.fch_modificacion = datetime.now()
-                user.fch_cambio_password = datetime.now()
+                user.fch_ultimo_cambio_contrasenia = datetime.now()
                 user.token = uuid.uuid4()
+                # Resetea el contador de los intentos fallidos, si está bloqueado tiene q hacerlo el superior o administrador del sistemas
+                user.intentos_fallidos = 0
                 user.save()
                 data['reseteo_contrasenia'] = 'si'
             else:

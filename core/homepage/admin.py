@@ -1,3 +1,5 @@
 from django.contrib import admin
+from core.homepage.models import *
 
-# Register your models here.
+
+admin.site.register(contabilizador_visitas)

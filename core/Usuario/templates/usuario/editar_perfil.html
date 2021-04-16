@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% load static %}
+
+
+{% block contenido %}
+    <form method="POST" action="." enctype="multipart/form-data"> 
+        <div class="card card-primary" >
+            <div class="" style=" color: #3371FF; font-size: 11px; height: 22px; " >
+                <h3 class="card-title" >
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-edit" style="font-size: 15px;"></i>
+                    <strong>{{ titulo_lista }}</strong> <strong>{{ request.user.nombres }}</strong>
+                </h3>
+            </div>
+            <div class="card-body" >
+                {% csrf_token %}
+
+                <!-- verificaciones de errores antes de guardar -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                            
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                   
+                    
+                <!-- /. verificaciones de errores antes de guardar -->
+
+                {% for campo in form.visible_fields %}
+                    <div class="form-group" style="font-size: 12px;">
+                        <label for="email">{% if campo.label == 'Cambiar contrasenia' %}
+                            Cambiar Contraseña <li style="color:red; font-size:10px; font-family: 'Verdana'; list-style: none;align='left'">*Al seleccionar "SI" se le generará el mismo usuario, y el sistema lo obligará a cambiarla.</li>
+                        {% else %}
+                            {% if  campo.label == 'Bloqueado' %}
+                                Acceso al Sistema
+                            {% else %}
+                                {{ campo.label }}
+                            {% endif %}
+                        {% endif %}</label>
+                        
+                        {% if campo.label == 'Correo Electrónico' %}
+                            {{ campo }}
+                            <span style="color:green; font-weight: bold;" id="emailOK"></span>
+                            <span style="color:red; font-weight: bold;" id="emailnoOK"></span>
+                        {% else %}
+                        {{ campo }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+             
+
+
+                
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" style="border-color:#FFFFFF; background-color:#FFFFFF;" >
+                <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+
+                <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger" style="position: absolute; right: 125px;">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+
+
+{% endblock  %}
+
+{% block javascript %}
+
+<script type="application/javascript">
+
+    // VALIDAR CORREO
+        document.getElementById('id_email').addEventListener('input', function() {
+            campo = event.target;
+            campo2 = event.target;
+            valido = document.getElementById('emailOK');
+            invalido = document.getElementById('emailnoOK');
+                
+            emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+            if (emailRegex.test(campo.value)) {
+            document.getElementById("id_email").style.borderColor = "green";
+            valido.innerText = "Válido";
+            invalido.innerText = "";
+            } 
+
+            if (emailRegex.test(campo2.value)) {
+
+            } else {
+            invalido.innerText = "Incorrecto";
+            document.getElementById("id_email").style.borderColor = "red";
+            valido.innerText = "";
+            }
+            
+        });
+    //FIN VALIDAR CORREO
+
+</script>
+
+{% endblock  %}
+
+

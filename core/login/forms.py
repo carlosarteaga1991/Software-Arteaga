@@ -53,7 +53,7 @@ class form_link_reseteo_contrasenia(forms.Form):
             'id': 'pass',
             'minlength': polit_contrasenia.longitud_minima_contrasenia,
             'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
-            #'onkeyup': 'caracteresContrasenia(value)'
+            'onkeypress': 'return caracteresContrasenia(event)'
         }
     ))
 
@@ -66,6 +66,7 @@ class form_link_reseteo_contrasenia(forms.Form):
             'onkeyup': 'validarContrasenia(value)',
             'minlength': polit_contrasenia.longitud_minima_contrasenia,
             'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
+            'onkeypress': 'return caracteresContrasenia(event)'
         }
     ))
 

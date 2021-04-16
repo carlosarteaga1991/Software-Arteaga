@@ -78,6 +78,7 @@
                 <input type="hidden" name="next" value="{{ next }}"> 
                 {% csrf_token %}
                 
+                
                 <div class="input-group mb-3">
                     {{ form.password }}
                     <div class="input-group-append">
@@ -125,12 +126,24 @@
                 </div>
                 <br>
                 {% if reseteo_contrasenia == "si" %}
-            <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h5><i class="icon fas fa-check"></i> ¡Cambio exitoso!</h5>
-                            Se ha reseteado su contraseña.
-            </div>
-        {% endif %}
+                    <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-check"></i> ¡Cambio exitoso!</h5>
+                                    Se ha reseteado su contraseña.
+                    </div>
+                {% endif %}
+
+                {% if form.errors %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
+                                    <ul style="font-size:14px;">
+                                        {% for field in errores.error %}
+                                             {{ field }}
+                                        {% endfor %}
+                                    </ul>
+                            </div>
+                {% endif %}
 
 
                 <label><FONT COLOR="red" style="font-size:12px;"><a id='error'></a></FONT>
@@ -144,17 +157,7 @@
             <a href="{{ login_url }}" style="color:blue;  font-size:12px;">Regresar a LogIn</a>
         </p>
         </div>
-        {% if form.errors %}
-                            <div class="alert alert-danger alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
-                                    <ul>
-                                        {% for field in errores.error %}
-                                             {{ field }}
-                                        {% endfor %}
-                                    </ul>
-                            </div>
-        {% endif %}
+        
     
 </div>
 

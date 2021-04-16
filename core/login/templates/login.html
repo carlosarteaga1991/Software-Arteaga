@@ -39,6 +39,9 @@
   <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
 
+  <!--Archivo static de javascript  -->
+    <script src="{% static 'js/funciones.js' %}"></script>
+
   <!-- Template Main CSS File -->
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
@@ -65,7 +68,7 @@
                 <input type="hidden" name="next" value="{{ next }}"> 
                 {% csrf_token %}
                 <div class="input-group mb-3">
-                    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
+                    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario'|attr:'onkeypress:return usuario(event)' }}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -73,7 +76,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
+                    {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña'|attr:'onkeypress:return caracteresContrasenia(event)' }}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -89,6 +92,11 @@
                 </div>
             </form>
         </div>
+
+        <!--<input type="checkbox" id="chec" name="chec" class="ver contrasenia" onclick="mostrarContrasenia()" >
+		    <label for="chec" class="chec" font-size="2">Mostrar contraseña</label>
+        <br>-->
+
         <div class="social-auth-links text-left">
             <p>
             <a href="{{ recuperar_password }}" style="color:blue;  font-size:12px;">¿Olvidaste tu contraseña?</a>
@@ -161,6 +169,8 @@
 <script src="{% static 'lib/adminlte-3.0.5/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'lib/adminlte-3.0.5/js/adminlte.min.js' %}"></script>
+
+
 
 </body>
 </html>

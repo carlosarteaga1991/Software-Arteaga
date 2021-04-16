@@ -1,4 +1,4 @@
-
+// INICIO MOSTRAR CONFIRMAR CONTRASEÑA 
 function mostrarContrasenia(){ 
  
     var p=document.getElementById("pass2");
@@ -9,25 +9,18 @@ function mostrarContrasenia(){
     var c=document.getElementById("chec");
     p.type=(c.checked) ? "text" : "password";
 }
+// FIN MOSTRAR CONFIRMAR CONTRASEÑA
 
-function validarContrasenias(){
-    var pass = document.getElementById("pass").value;
-    var pass2 = document.getElementById("pass2").value;
-
-    if (pass==pass2){
-             if (document.getElementById("resultado").innerHTML!="Correo invalido"){
-            return true;
-            }else{
-            alert("El correo es inválido, por favor colocar uno válido");
-            return false;
-               }
-    }else{
-    alert("Contraseña y Confirmar Contraseña deben de ser iguales");
-    return false;
-       }
+// INICIO MOSTRAR CONFIRMAR LOGIN 
+function mostrarContrasenia(){ 
+     var p=document.getElementById("id_password");
+    var c=document.getElementById("chec");
+    p.type=(c.checked) ? "text" : "password";
 }
+// FIN MOSTRAR CONFIRMAR LOGIN
 
 
+// INICIO DE CARACTERES DE CONTRASEÑA
 function caracteresContrasenia(e)
 {   
 	var key=e.KeyCode || e.which;
@@ -49,7 +42,9 @@ function caracteresContrasenia(e)
 
 		}      
 }
+// FIN DE CARACTERES DE CONTRASEÑA
 
+// INICIO DE CONFIRMACIÓN DE CONTRASEÑA
 function validarContrasenia(e){
     var pass = document.getElementById("pass").value;
     var pass2 = document.getElementById("pass2").value;
@@ -75,3 +70,93 @@ function validarContrasenia(e){
     }
 
 }
+// FIN VALIDAR CONFIRMACIÓN DE CONTRASEÑA
+
+// INICIO VALIDAR USUARIO
+var anterior = 0;
+var contador = 0;
+function usuario(e) {
+    var key = e.keyCode || e.which,
+    tecla = String.fromCharCode(key).toLowerCase(),
+    letras = "abcdefghijklmnñopqrstuvwxyz",
+    especiales = [],
+    tecla_especial = false;
+    anterior = key;
+    //alert(contador);
+
+    for (var i in especiales) {
+    if (key == especiales[i]) {
+        if (46 == anterior && contador==2) {
+            tecla_especial = false;
+            contador += 1;
+        }else {
+            tecla_especial = true;
+        break;
+        }
+        
+    }
+    }
+
+    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+    return false;
+    }
+}
+// FIN VALIDAR USUARIO
+
+// INICIO VALIDAR nombre
+function nombre(e) {
+    var key = e.keyCode || e.which,
+    tecla = String.fromCharCode(key).toLowerCase(),
+    letras = " áéíóúabcdefghijklmnñopqrstuvwxyz",
+    especiales = [],
+    tecla_especial = false;
+
+    for (var i in especiales) {
+    if (key == especiales[i]) {
+        tecla_especial = true;
+        break;
+    }
+    }
+
+    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+    return false;
+    }
+}
+// FIN VALIDAR nombre
+
+// INICIO SELECT ANIDADO
+$("#id_puesto").chained("#id_departamento"); 
+// FIN SELECT ANIDADO
+
+// VALIDAR CORREO
+// no está funcionando aquí hay q colocarlo directo
+document.getElementById('id_email').addEventListener('input', function() {
+    campo = event.target;
+    campo2 = event.target;
+    valido = document.getElementById('emailOK');
+    invalido = document.getElementById('emailnoOK');
+        
+    emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+    if (emailRegex.test(campo.value)) {
+    valido.innerText = "Válido";
+    invalido.innerText = "";
+    } 
+
+    if (emailRegex.test(campo2.value)) {
+
+    } else {
+    invalido.innerText = "Incorrecto";
+    valido.innerText = "";
+    }
+    
+});
+//FIN VALIDAR CORREO
+
+// INICIO VALIDAR SIN ESPACIOS
+/*var anterior = 0;
+var contador = 0;
+function sinEspacios(e) {
+ //número en código es 32
+}*/
+// FIN VALIDAR SIN ESPACIOS

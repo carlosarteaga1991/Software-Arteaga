@@ -15,7 +15,7 @@ class log(models.Model):
     Dato_despues = models.CharField(max_length=400,blank=True)
     campo_afectado = models.CharField(max_length=50,blank=True)
     ip_accion = models.CharField(max_length=50,blank=True,null=True)
-    nombre_equipo = models.CharField(max_length=70,blank=True,null=True)
+    user_log = models.CharField(max_length=70,blank=True,null=True)
 
     def __str__(self):
         return self.nombre_tabla

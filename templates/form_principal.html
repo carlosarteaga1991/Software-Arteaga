@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+
+
+{% block contenido %}
+    <form method="POST" action="." > <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
+        <div class="card card-primary" >
+            <div class="" style=" color: blue; font-size: 11px; height: 22px; ">
+                <h3 class="card-title" >
+                    &nbsp;<i class="fas fa-plus" style="font-size: 15px;"></i>
+                    <strong>{{ titulo_lista }}</strong> <strong>{{nombre_cliente}}</strong>
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                <input type="hidden" name="action" value='{{ action }}'>
+
+                <!-- verificaciones de errores antes de guardar -->
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-ban"></i> Ha ocurrido un error al querer guardar el registro</h5>
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <!-- /. verificaciones de errores antes de guardar -->
+
+                {% if select_puesto == 'mostrar' %}
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Departamento:</label>
+                        <select name="id_departamento" id="id_id_departamento" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in departamento %}
+                            {% if xx.id_departamento ==  seleccionar  %}
+                                <option value="{{ xx.id_departamento }}" selected>{{ xx.nombre }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id_departamento }}" >{{ xx.nombre }}</option> 
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                    </div>
+                {% endif %}
+
+                {% if select_cliente == 'mostrar' %}
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Empresa:</label>
+                        <select name="id_empresa" id="id_id_empresa" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in empresa %}
+                            {% if xx.id_empresa ==  seleccionar  %}
+                                <option value="{{ xx.id_empresa }}" selected>{{ xx.nombre_empresa }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id_empresa }}" >{{ xx.nombre_empresa }}</option>  
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group" style="font-size: 12px;">
+                    <label style="font-size: 13px; ">&nbsp;Usuario:</label>
+                        <select name="id_usuario" id="id_id_usuario" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                        <option  value="" >--------------</option>
+                            {% for xx in usuario %}
+                            {% if xx.id ==  seleccionaruser  %}
+                                <option value="{{ xx.id }}" selected>{{ xx.username }}</option> 
+                            {% else %}
+                                <option value="{{ xx.id }}" >{{ xx.username }}</option> 
+                            {% endif %}
+                           
+                            {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group" style="font-size: 12px;">
+                        <label for="email">{{ field.label }}</label>
+                        {{ field|add_class:'form-control'|attr:'autocomplete:off'  }}
+                    </div>
+
+                {% endfor %}
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" >
+                {% if permisos.usuario_administrador == True or plantilla == 'Editar Contraseña'%}
+                    <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                {% else %}
+                            {% if permisos.crear_pantalla == 1  and permisos.actualizar_pantalla == 1 %}
+                                            <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                            </button>
+                            {% else %}
+                                {% if permisos.crear_pantalla == 1 and permisos.actualizar_pantalla == 0 and permisos.pantalla_template == 'crear' %}
+                                    <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                    </button>
+                                {% else %}
+                                    {% if permisos.actualizar_pantalla == 1 and permisos.crear_pantalla == 0 and permisos.pantalla_template == 'actualizar' %}
+                                        <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                                <i class="fas fa-save"></i> Guardar
+                                        </button>
+                                    {% else %}
+                                        <button  disabled="true" style= "background: #6D6D6D; color: white;" class = "btn btn-xs btn-primary float-right " >
+                                                        <i class="fas fa-ban"></i> Sin permiso
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                {% endif %}
+
+                <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger" style="position: absolute; right: 125px;">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+
+
+{% endblock  %}
+
+
+

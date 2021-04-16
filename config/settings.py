@@ -151,12 +151,12 @@ LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 
 # Para alojar nuestros archivos media usamos:
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # En producción colocar para enviar los estáticos:
 #MEDIA_URL = '/'
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #creamos la URL absoluta para acceder
 
 # Para envío de correo en producción usar variables globales

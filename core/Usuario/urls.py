@@ -17,6 +17,10 @@ app_name = 'usuario'
 
 urlpatterns = [
 
+    # Para inicio de login exitoso y HOME
     path('usuario/',inicio_usuario.as_view(), name='inicio'),
+
+    # Para Editar Perfil desde configuración
+    path('usuario/editarPerfil/',editar_perfil_usuario.as_view(), name='editar_perfil'),
 
 ]

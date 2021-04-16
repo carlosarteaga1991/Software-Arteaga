@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title> SoftArtPor | {{ plantilla }}</title>
+    <link href="{% static 'img/logo_ti.png' %}" rel="icon">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/plugins/fontawesome-free/css/all.min.css' %}">
     <!-- Theme style -->
@@ -28,7 +29,7 @@
 
 
     <!--Archivo static de javascript en app cobros  -->
-    <script src="{% static 'js/functions.js' %}"></script>
+    <script src="{% static 'js/funciones.js' %}"></script>
     
     {% block head %}
 
@@ -39,41 +40,56 @@
     {% endblock  %}
 </head>
 {% block body %}
-    <body class="hold-transition sidebar-mini layout-fixed">
+    <body class=" sidebar-mini layout-fixed sidebar-collapse" >
 
-    <div class="wrapper">
+    <!--<div class="wrapper">-->
         <!-- Header -->
         {% include 'vtc/header.html' %}
         <!-- Sidebar -->
         {% include 'vtc/sidebar.html' %}
         <!-- Content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="background-color:#FFFFFF; ">
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <!--<div class="col-sm-6">
-                            <h1 class="m-0 text-dark"> Bienvenido <small>{{ nombre }}</small></h1>
-                        </div>-->
-                        <!--<div class="col-sm-6">
+                    <div class="col-sm-6">
+                            <h1 class="m-0 text-dark"> 
+                        {% if titulo_cabecera == 'no' %}
+                        
+                            
+                            
+                            {% else %}
+                                {% if tiempo_AM_PM == "AM" %}
+                                    Buenos días
+                                {% else %}
+                                Buenas tardes
+                                {% endif %} 
+                                <small>{{ request.user.nombres }}  {{ request.user.apellidos }}</small></h1>
+                            {% endif %}
+                            
+                             
+                        </div>
+
+                        <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                                <li class="breadcrumb-item"><a href="{{ link_home }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ link_referencia_nombre }}"> {{ referencia_nombre }} </a></li>
                             </ol>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="content">
-                <div class="container-fluid">
+           
+               
                     {% block contenido %}
 
                     {% endblock %}
-                </div>
+                
             </div>
-        </div>
+        
         <!-- Footer -->
         {% include 'footer.html' %}
-    </div>
+    <!--</div>-->
     {% block javascript %}
 
     {% endblock  %}

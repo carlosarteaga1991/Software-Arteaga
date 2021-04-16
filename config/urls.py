@@ -16,6 +16,10 @@ from core.login.views import *
 # Importanto para inicio usuario
 from core.Usuario.urls import *
 
+# Para imagenes 
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -31,8 +35,10 @@ urlpatterns = [
     # Para pantalla inicial luego de iniciar sesión de Usuario
     path('perfil/',include('core.Usuario.urls'), name='perfil_inicio'),
 
-    # Link para pruebas borrar en producción
+    # Link para pruebas borrar en producción 
     path('prueba/', vista_prueba.as_view()),
 
     
 ]
+# Agregamos esta línea para archivos MEDIA
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

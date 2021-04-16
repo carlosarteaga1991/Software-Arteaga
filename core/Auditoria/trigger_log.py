@@ -21,6 +21,7 @@ Reseteo de Contraseña
 from datetime import date, datetime
 from core.Auditoria.models import *
 import socket #para obtener ip local
+from django.contrib.auth.hashers import make_password
 
 
 class trigger():
@@ -37,27 +38,46 @@ class trigger():
             ip = ""
         return ip
     
+    """
     def get_name(request):
         try:
-            nombre_maq = socket.gethostbyaddr(request.META.get("REMOTE_ADDR")) #request.META.get("REMOTE_HOST")
+            #nombre_maq = socket.gethostbyaddr(request.META.get("REMOTE_ADDR")) #request.META.get("REMOTE_HOST")
+            nombre_maq = ""
         except:
             nombre_maq = ""
         return nombre_maq
+    """
 
+    def guardar(nombre_usuario, nombre_tabla,id_registro,tipo_accion,Dato_anterior,Dato_despues,campo_afectado,ip_accion,username):
+        try:
+            nuevo_log = log(
+            nombre_usuario = nombre_usuario,
+            nombre_tabla = nombre_tabla,
+            id_registro = id_registro,
+            tipo_accion = tipo_accion,
+            Dato_anterior = Dato_anterior,
+            Dato_despues = Dato_despues,
+            campo_afectado = campo_afectado,
+            ip_accion = ip_accion,
+            #ip_accion = socket.gethostbyname(socket.gethostname()),
+            user_log = username #socket.gethostname()
+            )
+            nuevo_log.save()
+            return True
+        except Exception as e:
+            pass
 
-    def guardar(nombre_usuario, nombre_tabla,id_registro,tipo_accion,Dato_anterior,Dato_despues,campo_afectado,ip_accion,nombre_equipo):
-        nuevo_log = log(
-        nombre_usuario = nombre_usuario,
-        nombre_tabla = nombre_tabla,
-        id_registro = id_registro,
-        tipo_accion = tipo_accion,
-        Dato_anterior = Dato_anterior,
-        Dato_despues = Dato_despues,
-        campo_afectado = campo_afectado,
-        ip_accion = ip_accion,
-        #ip_accion = socket.gethostbyname(socket.gethostname()),
-        nombre_equipo = nombre_equipo #socket.gethostname()
-        )
-        nuevo_log.save()
-        return True
-
+    def guardar_historial_pass(contrasenia,ip_accion,id_usuario):
+        #user.set_password(request.POST['password'])
+        #si al hacer validación de historial de contraseñas 
+        #probar haciendo así sin el igual
+        try:
+            nuevo_log_historial = historial_contrasenia(
+            contrasenia = contrasenia,
+            ip_accion = ip_accion,
+            id_usuario_id = int(id_usuario) 
+            )
+            nuevo_log_historial.save()
+            return True
+        except Exception as e:
+            pass
