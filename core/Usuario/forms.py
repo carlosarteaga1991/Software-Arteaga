@@ -18,7 +18,7 @@ class form_perfil_usuario(ModelForm):
         
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
-            form.field.widget.attrs['autocomplete'] = 'off'
+            #form.field.widget.attrs['autocomplete'] = 'off'
         self.fields['nombres'].widget.attrs['autofocus'] = True
 
     class Meta():
@@ -46,3 +46,4 @@ class form_perfil_usuario(ModelForm):
             )
     
         }
+

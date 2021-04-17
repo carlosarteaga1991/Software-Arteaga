@@ -116,7 +116,12 @@ class usuario(AbstractBaseUser):
             return '{}{}'.format(MEDIA_URL, self.imagen_perfil)
         return '{}{}'.format(STATIC_URL, 'img/usuario_sin_foto.jpeg')
     
-
+    def toJSON(self):
+        item = model_to_dict(self)
+        item['cat'] = self.cat.toJSON()
+        item['imagen_perfil'] = self.get_image()
+        item['pvp'] = format(self.pvp, '.2f')
+        return item
 
     #estos de abajo se borran si se usa PermisionMixin
     def has_perm(self,perm,obj = None):

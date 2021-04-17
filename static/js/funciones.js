@@ -19,6 +19,23 @@ function mostrarContrasenia(){
 }
 // FIN MOSTRAR CONFIRMAR LOGIN
 
+// INICIO MOSTRAR CONFIRMAR DENTRO DE LOGGIN
+function mostrarContrasenia_session(){ 
+ 
+    var p=document.getElementById("id_new_password2");
+    var c=document.getElementById("chec");
+    p.type=(c.checked) ? "text" : "password";
+
+    var p=document.getElementById("id_new_password1");
+    var c=document.getElementById("chec");
+    p.type=(c.checked) ? "text" : "password";
+
+    var p=document.getElementById("id_old_password");
+    var c=document.getElementById("chec");
+    p.type=(c.checked) ? "text" : "password";
+}
+// FIN MOSTRAR CONFIRMAR LOGIN DENTRO DE LOGGIN
+
 
 // INICIO DE CARACTERES DE CONTRASEÑA
 function caracteresContrasenia(e)
@@ -44,7 +61,7 @@ function caracteresContrasenia(e)
 }
 // FIN DE CARACTERES DE CONTRASEÑA
 
-// INICIO DE CONFIRMACIÓN DE CONTRASEÑA
+// INICIO DE CONFIRMACIÓN DE CONTRASEÑA FUERA DE LOGGIN
 function validarContrasenia(e){
     var pass = document.getElementById("pass").value;
     var pass2 = document.getElementById("pass2").value;
@@ -70,7 +87,36 @@ function validarContrasenia(e){
     }
 
 }
-// FIN VALIDAR CONFIRMACIÓN DE CONTRASEÑA
+// FIN VALIDAR CONFIRMACIÓN DE CONTRASEÑA FUERA DE LOGGIN
+
+// INICIO DE CONFIRMACIÓN DE CONTRASEÑA DENTRO DE LOGGIN
+function validarContrasenia_loggin(e){
+
+    var pass = document.getElementById("id_new_password1").value;
+    var pass2 = document.getElementById("id_new_password2").value;
+    
+    if ( pass==pass2) {
+        document.getElementById("error").innerHTML= "";
+        document.getElementById("id_new_password1").style.borderColor = "green";
+        document.getElementById("id_new_password2").style.borderColor = "green";
+        //document.getElementById("verificar").style.borderColor = "green";
+        //document.getElementById("verificar2").style.borderColor = "green";
+        document.getElementById("noerror").innerHTML = "¡Correcto!";
+        //document.getElementById("mostrarBoton").style.backgroundColor = "green";
+        //document.getElementById("mostrarBoton").type = "submit";
+    } else {
+        document.getElementById("noerror").innerHTML = "";
+        document.getElementById("id_new_password1").style.borderColor = "red";
+        document.getElementById("id_new_password2").style.borderColor = "red";
+        //document.getElementById("verificar").style.borderColor = "red";
+        //document.getElementById("verificar2").style.borderColor = "red";
+        document.getElementById("error").innerHTML= "¡No son iguales!";
+        //document.getElementById("mostrarBoton").style.backgroundColor = "gray";
+        //document.getElementById("mostrarBoton").type = "";
+    }
+
+}
+// FIN VALIDAR CONFIRMACIÓN DE CONTRASEÑA DENTRO DE LOGGIN
 
 // INICIO VALIDAR USUARIO
 var anterior = 0;
