@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, date
 from core.Usuario.models import *
 from core.Usuario.forms import *
+from core.RRHH.models import *
 
 # Importar para alimentar log
 from core.Auditoria.trigger_log import trigger
@@ -38,8 +39,18 @@ class inicio_usuario(LoginRequiredMixin, TemplateView):
         # Colocar en todos lo siguiente variando lo que se envía
         context['link_home'] = reverse_lazy('usuario:inicio')
         context['referencia_nombre'] = 'Dashboard'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy(
-            'usuario:inicio')  # esto varía
+        context['link_referencia_nombre'] = reverse_lazy('usuario:inicio')  # esto varía
+        if self.request.user.estado == '1':
+            estado = 'Activo'
+        else:
+            estado='Inactivo'
+        context['estado'] = estado
+
+        # Obteniendo datos del usuario loggeado
+        departameto = departamentos.objects.get(id_departamento=self.request.user.id_departamento)
+        puesto = puestos.objects.get(id_puesto=self.request.user.id_puesto)
+        context['departamento'] = departameto
+        context['puesto'] = puesto
 
         context['quitar_footer'] = 'no'
 
@@ -196,7 +207,18 @@ class cambiar_password_usuario(LoginRequiredMixin, FormView):
             if form.is_valid():
                 form.save()
                 registro = self.get_object()
-                registro.fch_cambio_password = datetime.now()
+                fch = datetime.now()
+                #mes
+                if len(str(fch.month)) == 1:
+                    mes = '0' + str(fch.month)
+                else:
+                    mes = str(fch.month)
+                #dia
+                if len(str(fch.day)) == 1:
+                    dia = '0' + str(fch.day)
+                else:
+                    dia = str(fch.day)
+                registro.fch_ultimo_cambio_contrasenia = str(fch.year) + '/' + str(mes) + '/' + str(dia) + '  ' + datetime.today().strftime("%H:%M %p")
                 registro.save()
                 # INICIO para log
                 try:

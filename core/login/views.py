@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from config.urls import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.messages import *
-from datetime import datetime
+from datetime import datetime,date
 from django.contrib.auth.hashers import make_password
 
 # Importanto para el formulario a usar
@@ -179,7 +179,18 @@ class cambiar_resetear_contrasenia(FormView):
                 user.set_password(request.POST['password'])
                 user.usuario_modificacion = user.id
                 user.fch_modificacion = datetime.now()
-                user.fch_ultimo_cambio_contrasenia = datetime.now()
+                fch = datetime.now()
+                #mes
+                if len(str(fch.month)) == 1:
+                    mes = '0' + str(fch.month)
+                else:
+                    mes = str(fch.month)
+                #dia
+                if len(str(fch.day)) == 1:
+                    dia = '0' + str(fch.day)
+                else:
+                    dia = str(fch.day)
+                user.fch_ultimo_cambio_contrasenia = str(fch.year) + '/' + str(mes) + '/' + str(dia) + '  ' + datetime.today().strftime("%H:%M %p")
                 user.token = uuid.uuid4()
                 # Resetea el contador de los intentos fallidos, si está bloqueado tiene q hacerlo el superior o administrador del sistemas
                 user.intentos_fallidos = 0

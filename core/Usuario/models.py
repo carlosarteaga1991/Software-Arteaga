@@ -3,9 +3,10 @@ Software-ArtPort
 Fecha: 06 de abril del 2021 hora: 20:13 pm
 Última modificación a código
 """
-
+from core.RRHH.models import *
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
