@@ -1,12 +1,14 @@
 
-/* para los bordes al validar y ser exitoso 
-.form input { border-color:#2ecc71; }
-.input-group-text {border-color:#2ecc71; }*/
-
-/*para los bordes al validar y ser erroneo 
-.form input.error { border-color:#e74c3c; }
-.input-group-text.error {border-color:#e74c3c; }*/
-
+.slider li {
+    list-style: none;
+}
+    
+.slider {
+    width:250px; 
+    height:120px; 
+    display:block; 
+    margin:auto;
+}
 
 
 
