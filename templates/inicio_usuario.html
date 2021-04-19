@@ -3,42 +3,63 @@
 
 {% block contenido %}
 
+<div class="card-body">
+    <div class="row" >
 
-<div class="row">
+        <!--Primer contenedor de información-->
+        <div class="col-lg-6 col-6" >
+            <div class=""><!--small-box bg-info-->
+            
+                <!--<div class="inner" style="background-color: #FFFF; ">
+                    <div class="image" >
+                        <img src="{{ request.user.get_image }}" class="img-circle elevation-1" alt="User Image" style="width:330px; height:333px;display:block; margin:auto;">
+                    </div>
+                </div>-->
+                <div  class="" >
+            <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
+                <img src="{{ request.user.get_image }}" class="img-fluid mb-2 img-circle elevation-1" alt="white sample" style="width:330px; 
+                height:333px;
+                display:block; 
+                margin:auto; 
+                outline:none;">
+            </a>
+            </div>
+            
 
-    <!--Primer contenedor de información-->
-    <div class="col-lg-6 col-6" >
-        <div class="small-box bg-info" >
+            </div>
         
-            <div class="inner" style="background-color: #FFFF; ">
-                <div class="image" >
-                    <img src="{{ request.user.get_image }}" class="img-circle elevation-1" alt="User Image" style="width:330px; height:333px;display:block; margin:auto;">
+        </div>
+        <!-- /. Primer contenedor de información-->
+
+        <!--Segundo contenedor de información-->
+        <div class="col-lg-6 col-6">
+            <div class=""><!--small-box bg-info-->
+                <div class="inner" style="color: black; background-color: #FFFF;">
+                    <h4><strong ></i>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ departamento.nombre }}</h4>
+                    <h4><strong >Puesto: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ puesto.nombre }}</h4>
+                    <h4><strong >Estado: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ estado }}</h4>
+                    <h4><strong >Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.email}}</h4>
+                    <h4><strong >Inicio de sesión fallidos: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.intentos_fallidos }}</h4>
+                    <h4><strong >Ingreso a labores: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ingreso_labores|naturalday }}</h4>
+                    <h4><strong >Último inicio de sesión:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ultimo_login }}</h4>
+                    <h4><strong >Último cambio contraseña: &nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ultimo_cambio_contrasenia}}</h4>
+                    <h4><strong >Próximo cambio contraseña:&nbsp; </strong> {{ request.user.fch_cambio_password|naturalday }}</h4>
                 </div>
             </div>
-
         </div>
-    </div>
-    <!-- /. Primer contenedor de información-->
+        <!-- /. Segundo contenedor de información-->
+    
 
-    <!--Segundo contenedor de información-->
-    <div class="col-lg-6 col-6">
-        <div class="small-box bg-info">
-            <div class="inner" style="color: black; background-color: #FFFF;">
-                <h4><strong ></i>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ departamento.nombre }}</h4>
-                <h4><strong >Puesto: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ puesto.nombre }}</h4>
-                <h4><strong >Estado: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ estado }}</h4>
-                <h4><strong >Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.email}}</h4>
-                <h4><strong >Inicio de sesión fallidos: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.intentos_fallidos }}</h4>
-                <h4><strong >Ingreso a labores: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ingreso_labores|naturalday }}</h4>
-                <h4><strong >Último inicio de sesión:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ultimo_login }}</h4>
-                <h4><strong >Último cambio contraseña: &nbsp;&nbsp;&nbsp;</strong> {{ request.user.fch_ultimo_cambio_contrasenia}}</h4>
-                <h4><strong >Próximo cambio contraseña:&nbsp; </strong> {{ request.user.fch_cambio_password|naturalday }}</h4>
-            </div>
-        </div>
     </div>
-    <!-- /. Segundo contenedor de información-->
-
 </div>
 
 
+<div class="card-body">
+<div class="row" style="background-color: #6CA3FC;  "><h1>dfdf</h1></div>
+</div>
+
+
+
 {% endblock %}
+
+
