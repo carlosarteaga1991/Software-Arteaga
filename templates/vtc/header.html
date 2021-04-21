@@ -56,18 +56,22 @@
                 <div class="dropdown-divider"></div>
                 <a href="{% url 'usuario:editar_perfil' %}" class="dropdown-item">
                     <i class="fas fa-edit mr-2"></i> Editar perfil
-                    <span class="float-right text-muted text-sm">{{ request.user.fch_modificacion | naturalday  }}</span>
+                    <span class="float-right text-muted text-sm">{{ fch_modificacion_perfil }}</span>
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="{% url 'usuario:editar_contrasenia' %}" class="dropdown-item">
                     <i class="fas fa-lock mr-2"></i> Editar contraseña
-                    <span class="float-right text-muted text-sm">13 hours</span>
+                    <span class="float-right text-muted text-sm">{{ fch_modificacion_password }}</span>
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">
-                    <p>Este sistema te permitira realizar diferentes actividades</p>
+                    <p>Pausar tiempo de actividad</p>
                 </a>
-            </div>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item dropdown-footer">
+                    <p>Dashboard</p>
+                </a>
+                </div>
         </li>
         <!-- /. Para editar perfil y contraseña -->
        

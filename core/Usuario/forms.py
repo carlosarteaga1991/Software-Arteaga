@@ -47,3 +47,50 @@ class form_perfil_usuario(ModelForm):
     
         }
 
+class form_editar_usuarios(ModelForm):
+    user = usuario.objects.filter(borrado=0,estado=1)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['nombres'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = usuario
+        
+        fields = '__all__'
+        # si deseo excluir ciertos campos coloco
+        exclude = ['primer_ingreso','fch_cambio_password','intentos_fallidos','fch_ultimo_cambio_contrasenia','fch_ultimo_login','imagen_perfil','fch_modificacion','usuario_modificacion','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+
+        widgets = {
+            'nombres': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los primeros nombres',
+                    'onkeypress': 'return nombre(event)',
+                }
+            ),
+            'apellidos': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los apellidos',
+                    'onkeypress': 'return nombre(event)',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'placeholder': 'Formado por primero nombre y apellido, ejemplo: "nombre.apellido"',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'onkeypress': 'return usuario(event)',
+                }
+            ),
+            'fch_ingreso_labores': DateInput(
+                attrs={
+                    'type': 'date',
+                }
+            )
+            
+        }

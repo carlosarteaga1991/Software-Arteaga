@@ -33,7 +33,7 @@ urlpatterns = [
     path('login/',include('core.login.urls'), name='inicio_sesion'),
 
     # Para pantalla inicial luego de iniciar sesión de Usuario
-    path('perfil/',include('core.Usuario.urls'), name='perfil_inicio'),
+    path('usuario/',include('core.Usuario.urls'), name='perfil_inicio'),
 
     # Link para pruebas borrar en producción 
     path('prueba/', vista_prueba.as_view()),

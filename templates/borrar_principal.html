@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% load static %}
+<!--Archivo static de javascript en app cobros  -->
+    <script src="{% static 'js/functions.js' %}"></script>
+
+{% block contenido %}
+<div class="card-body">
+    <form method="post" action="." style="padding-top: 8%">
+        <div class="card card-default">
+            <div class="card-header" >
+                <h3 class="card-title" style="font-size: 17px;">
+             
+                    {{ titulo_lista }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="{{ action }}">
+
+                <div class="alert alert-warning alert-dismissible" style="font-size: 12px;">
+
+                  <h5><i class="icon fas fa-exclamation-triangle"></i> ¿Seguro que desea borrar el registro {{borrar_titulo}} <strong>{{object.id_rol}}</strong> / <strong>{{object.username}} </strong> <strong>{{object.tipo_contacto}} </strong> <strong>{{nombre_cliente}}</strong> <strong>{{ object.descripcion }}</strong> <strong>{{ object.nombre }}</strong><strong>{{ object.nombre_empresa }}</strong> ?</h5>
+                  ¡Esta acción no se puede revertir!
+                </div>
+                <!-- verificaciones de errores antes de guardar -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                            
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                        </ul>
+                        </div>
+                    {% endif %}
+
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" >
+
+
+                    <button type="submit" class = "btn btn-xs btn-success float-right btn-borrar" >
+                    <i class="fas fa-trash"></i> ¡Sí, borrar!
+                    </button>
+
+                
+                <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+
+        <script>
+        
+        $('form').on('submit', function (e) {
+        //$('.btn-borrar').on('click', function () {
+            e.preventDefault();
+            var parameters = $(this).serializeArray();
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json'
+            }).done(function (data) {
+                console.log(data);
+                if (!data.hasOwnProperty('error')) {
+                    /*Swal.fire(
+                            '¡Borrado!',
+                            'El registro ha sido eliminado satisfactoreamente.',
+                            'success'
+                          )*/
+                    location.href = '{{ list_url }}';
+                    return false;
+                }
+                message_error(data.error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + ': ' + errorThrown);
+            }).always(function (data) {
+
+            });
+        });
+    </script>
+</div>
+{% endblock  %}

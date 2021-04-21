@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+
+{% block head %}
+
+    <!-- DataTables Librerías -->
+    <link rel="stylesheet" href="{% static 'lib/DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'lib/DataTables/DataTables-1.10.21/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+{% endblock  %}
+
+<!--<div class="modal fade" id="eliminacion" role="dialog">
+</div>-->
+
+{% block contenido %}
+<div class="card-body">
+
+    <!-- Botón para crear nuevo -->
+        <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
+            <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
+        </a>
+    <!-- /. Botón para crear nuevo -->
+
+    <!-- Botón para volver -->
+    {% if boton_volver == 'si' %}
+        <a href="{{ url_boton_volver }}" class = "btn btn-xs btn-danger float-left eventoAjax" >
+            <i class="fas fa-backspace"></i> <strong>Volver</strong>
+        </a>
+    {% endif %}
+    <!-- /. Botón para volver -->
+
+    <div class=" card-primary" >
+         
+                      <div class="" style=" color: black; font-size: 11px; height: 22px">
+
+                        <h3 class="card-title">
+                          &nbsp;<i class="fas fa-search" style="font-size: 15px;"></i>
+                          <strong>{{ titulo_lista }}</strong> 
+                        </h3>
+                      </div>
+
+                      
+
+
+            
+
+                  
+
+             
+              
+               
+              <!-- alerta exitosa -->
+              {% if  tipo  == 'nuevo' %}
+                <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true" style="font-size:20px">×</span>
+                </button>    <strong>¡Guardado exitoso!</strong> El registro se ha guardado satisfactoreamente.
+              </div>
+              {% else %}
+                  {% if tipo == 'editar' %}
+                    <div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true" style="font-size:20px">×</span>
+                      </button>    <strong>¡Modificación exitosa!</strong> El registro se ha modificado satisfactoreamente.
+                    </div>
+                  {% else %}
+
+                  {% endif %}
+              {% endif %}
+              
+              <!-- /. alerta exitosa -->  
+
+          
+              <div class="card-body" style="font-size: 12px;"> 
+                
+                  <table class="table table-hover table-bordered table-striped"  id="data" >
+                    <thead style="background: #6CA3FC; color: white;"> 
+                   
+                        {% block columnas %}
+                        
+                        {% endblock  %}
+                    
+                    </thead>
+                    <tbody>
+                    {% block filas %}
+                    
+                    {% endblock  %}
+                    </tbody>
+                </table>
+
+
+                
+                
+
+                
+              </div>
+              
+    </div>
+</div>
+{% endblock  %}
+
+
+
+

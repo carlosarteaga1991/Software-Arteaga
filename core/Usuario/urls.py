@@ -18,12 +18,21 @@ app_name = 'usuario'
 urlpatterns = [
 
     # Para inicio de login exitoso y HOME (No requiere permisos)
-    path('usuario/',inicio_usuario.as_view(), name='inicio'),
+    path('',inicio_usuario.as_view(), name='inicio'),
 
     # Para Editar Perfil desde configuración (No requiere permisos)
-    path('usuario/editarPerfil/',editar_perfil_usuario.as_view(), name='editar_perfil'),
+    path('editarPerfil/',editar_perfil_usuario.as_view(), name='editar_perfil'),
 
     # Para Editar Perfil desde configuración (No requiere permisos)
-    path('usuario/editarPassword/',cambiar_password_usuario.as_view(), name='editar_contrasenia'),
+    path('editarPassword/',cambiar_password_usuario.as_view(), name='editar_contrasenia'),
+
+    # Para Listar usuarios (SÍ requiere permisos)
+    path('listar/',listar_usuarios.as_view(), name='listar_usuarios'), 
+
+    # Para editar usuarios (SÍ requiere permisos)
+    path('editar/<int:pk>/',editar_usuario.as_view(), name='editar_usuarios'), 
+
+    # Para borrar usuarios (SÍ requiere permisos)
+    path('borrar/<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'), 
 
 ]

@@ -7,13 +7,12 @@ Fecha: 08 de abril del 2021 hora: 05:54 am
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic import TemplateView, UpdateView
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView, UpdateView,DeleteView, TemplateView
 from django.urls import reverse_lazy
 from config.urls import *
 from django.views.decorators.csrf import csrf_exempt
@@ -37,6 +36,18 @@ class inicio_usuario(LoginRequiredMixin, TemplateView):
         context['tiempo_AM_PM'] = datetime.today().strftime("%p")
 
         # Colocar en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
         context['link_home'] = reverse_lazy('usuario:inicio')
         context['referencia_nombre'] = 'Dashboard'  # esto varía
         context['link_referencia_nombre'] = reverse_lazy('usuario:inicio')  # esto varía
@@ -115,6 +126,10 @@ class editar_perfil_usuario(LoginRequiredMixin, UpdateView):
             except Exception as e:
                 pass
             # FIN para log
+            registro = self.get_object()
+            registro.fch_modificacion = datetime.now()
+            registro.save()
+
             form = self.get_form()
             data = form.save()
             
@@ -125,17 +140,32 @@ class editar_perfil_usuario(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['plantilla'] = 'Editar'
+        context['plantilla'] = 'Editar Perfil'
         context['quitar_footer'] = 'si'
         context['btn_cancelar'] = reverse_lazy('usuario:inicio')
         context['titulo_lista'] = 'Editar Perfil de '
 
-        # Colocar en todos lo siguiente variando lo que se envía
+        # INICIO Colocar en todos lo siguiente variando lo que se envía
         context['titulo_cabecera'] = 'no'  # esto varia
         context['link_home'] = reverse_lazy('usuario:inicio')
         context['referencia_nombre'] = 'Editar Perfil'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy(
-            'usuario:editar_perfil')  # esto varía
+        context['link_referencia_nombre'] = reverse_lazy('usuario:editar_perfil')  # esto varía
+        #  en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        # FIN Colocar en todos lo siguiente variando lo que se envía
+
 
         """
         # INICIO VERIFICACIÓN DE PERMISOS
@@ -274,14 +304,259 @@ class cambiar_password_usuario(LoginRequiredMixin, FormView):
         context['titulo_cabecera'] = 'no'  # esto varia
         context['link_home'] = reverse_lazy('usuario:inicio')
         context['referencia_nombre'] = 'Editar Contraseña'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy(
-            'usuario:editar_contrasenia')  # esto varía
+        context['link_referencia_nombre'] = reverse_lazy('usuario:editar_contrasenia')  # esto varía
+        # Colocar en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
 
         """      
         # INICIO VERIFICACIÓN DE PERMISOS
         context['permisos'] = asignar_permiso().metodo_permiso(3,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
         # FIN VERIFICACIÓN DE PERMISOS
         
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+        """
+
+        return context
+
+class listar_usuarios(LoginRequiredMixin,ListView):
+    model = usuario
+    template_name = 'usuario/listar.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(borrado=0,usuario_administrador='0')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request,*args,**kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Usuarios'
+        context['quitar_footer'] = 'si'
+        context['titulo_lista'] = 'Usuarios existentes'
+        #context['create_url'] = reverse_lazy('crear_usuarios')
+        #context['url_salir'] = reverse_lazy('login:iniciar')
+        departamento = departamentos.objects.filter(borrado=0,estado=1)
+        puesto = puestos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+        context['puesto'] = puesto
+
+        # INICIO Colocar en todos lo siguiente variando lo que se envía
+        context['titulo_cabecera'] = 'no'  # esto varia
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        context['referencia_nombre'] = 'Lista de Usuarios'  # esto varía
+        context['link_referencia_nombre'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        #  en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        # FIN Colocar en todos lo siguiente variando lo que se envía
+
+        """
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+        """
+
+        return context
+
+class editar_usuario(LoginRequiredMixin,UpdateView):
+    model = usuario
+    form_class = form_editar_usuarios
+    template_name = 'usuario/editar.html'
+    success_url = reverse_lazy('usuario:listar_usuarios')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+    
+    def post(self, request,*args,**kwargs):
+        data = {}
+        try:
+            registro = self.get_object()
+            registro.id_puesto = int(request.POST['id_puesto'])
+            registro.id_departamento = int(request.POST['id_departamento'])
+            registro.username = request.POST['username']
+            registro.email = request.POST['email']
+            registro.nombres = request.POST['nombres']
+            registro.apellidos = request.POST['apellidos']
+            registro.estado = request.POST['estado']
+            registro.id_rol_id = request.POST['id_rol']
+            if request.POST['cambiar_contrasenia'] == '1':
+                registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
+                registro.password = make_password(request.POST['username'])
+            else:
+                registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
+            registro.bloqueado = request.POST['bloqueado']
+            registro.usuario_modificacion = int(request.user.id)
+            registro.fch_modificacion = datetime.now()
+            registro.save()
+            return redirect('listar_usuarios')
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Editar'
+        context['quitar_footer'] = 'si'
+        context['btn_cancelar'] = reverse_lazy('usuario:listar_usuarios')
+        context['titulo_lista'] = 'Editar usuario:'
+        departamento = departamentos.objects.filter(borrado=0,estado=1)
+        puesto = puestos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+        context['puesto'] = puesto
+        user = usuario.objects.filter(borrado=0, id = self.kwargs['pk'])
+        z = 0
+        zz = 0
+        zzz = 0
+        for c in user:
+            z = c.id_departamento
+            zz = c.id_puesto
+            zzz = c.id_rol_id
+        context['seleccionar_dep'] = z
+        context['seleccionar_puesto'] = zz
+        context['seleccionar_rol'] = zzz
+        rol = roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+        context['rol'] = rol
+        user1 = usuario.objects.get(borrado=0, id = self.kwargs['pk'])
+        context['nombre_usuario'] = user1.username
+
+        # INICIO Colocar en todos lo siguiente variando lo que se envía
+        context['titulo_cabecera'] = 'no'  # esto varia
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        context['referencia_nombre'] = 'Editar de Usuario'  # esto varía
+        #context['link_referencia_nombre'] = reverse_lazy('usuario:editar_usuarios')  # esto varía
+        #  en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        # FIN Colocar en todos lo siguiente variando lo que se envía
+
+        """
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'actualizar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+        """
+
+        return context
+
+class borrar_usuario(LoginRequiredMixin,DeleteView):
+    model = usuario
+    template_name = 'usuario/borrar.html'
+    success_url = reverse_lazy('usuario:listar_usuarios')
+
+    def dispatch(self, request,*args,**kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request,*args,**kwargs)
+
+    def post(self, request,*args,**kwargs):
+        data = {}
+        try:
+            registro = self.get_object()
+            registro.borrado = 1
+            registro.usuario_modificacion = int(request.user.id)
+            registro.fch_modificacion = datetime.now()
+            registro.save()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Eliminar'
+        context['btn_cancelar'] = reverse_lazy('usuario:listar_usuarios')
+        context['list_url'] = reverse_lazy('usuario:listar_usuarios')
+        context['quitar_footer'] = 'si'
+        #context['url_salir'] = reverse_lazy('login:iniciar')
+        context['titulo_lista'] = 'Eliminar usuario'
+
+        # INICIO Colocar en todos lo siguiente variando lo que se envía
+        context['titulo_cabecera'] = 'no'  # esto varia
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        context['referencia_nombre'] = 'Borrar Usuario'  # esto varía
+        #context['link_referencia_nombre'] = reverse_lazy('usuario:borrar_usuarios')  # esto varía
+        #  en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        # FIN Colocar en todos lo siguiente variando lo que se envía
+
+        """
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'borrar',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
         # INICIO PARA RECORDATORIOS HEADER
         context['cont_alerta'] = alertas().recordatorios(self.request.user)
         # FIN PARA RECORDATORIOS HEADER

@@ -71,7 +71,7 @@ class usuario(AbstractBaseUser):
     nombres = models.CharField('Nombres',max_length=30,blank= True, null = True)
     apellidos = models.CharField('Apellidos',max_length=30,blank= True, null = True)
     imagen_perfil = models.ImageField('Imagen de Perfil',upload_to='perfil/%Y/%m/%d',height_field=None, width_field=None, max_length=200,blank=True, null=True)
-    fch_ingreso_labores = models.DateTimeField('Fecha de Ingreso a Laborar',blank= True, null = True)
+    fch_ingreso_labores = models.DateField('Fecha de Ingreso a Laborar',blank= True, null = True)
     #al usar imagenes instakar # pip3 install pillow
     #antes de realizar las primeras migraciones es bueno definir el modelo usurio
     #después hacemos makemigrations y migrate
