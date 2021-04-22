@@ -1,0 +1,173 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SoftArtPor | {{ plantilla }}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.5/css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- librería de alertas -->
+  <script src="{% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %}"></script>
+
+    <!-- Favicons -->
+  <link href="{% static 'img/logo_ti.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <!-- Archivo static de javascript propios  -->
+  <script src="{% static 'js/funciones.js' %}"></script>
+
+   <!-- Archivo static de css propios  -->
+   <link href="{% static 'css/estilos_propios.css' %}" rel="stylesheet"> 
+
+   <!-- jQuery -->
+    <script src="{% static 'lib/adminlte-3.0.5/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'lib/adminlte-3.0.5/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'lib/adminlte-3.0.5/js/adminlte.min.js' %}"></script>
+
+</head>
+<body class="" style="-ms-flex-align:center;align-items:center;background:#ffff;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;height:100vh;-ms-flex-pack:center;justify-content:center">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h2><strong>Soft</strong><a href="{{ btn_cancelar }}"><span>ArtPort </span></a></h2>
+      
+        <a href="{% url 'login:salir' %}" class="btn btn-danger btn-block  " style="width:9%; font-size:13px; right: 125px;">
+            <i class="fas fa-sign-out-alt"></i>
+            </i>&nbsp;&nbsp;<strong>Salir</strong>
+        </a>
+
+    </div>
+  </header><!-- End Header -->
+<div class="login-logo">
+        <a href="{{ btn_cancelar }}" style="color:black;"><b>Primer Ingreso: </b>&nbsp;&nbsp; {{request.user.nombres}} {{request.user.apellidos}}</a>
+    </div>
+<div class="login-box" style="">
+    
+    <div class="">
+        <div class="card-body login-card-body">
+            <!--<p class="login-box-msg">Ingrese sus credenciales</p>-->
+            <form id="form" class="form" action="." method="post">
+            <!-- esto para recibir la variable NEXT en caso q no esté loggeado y quiera ingresar a una URL, al iniciar sesión le dirigirá a esa página q deseaba ingresar -->
+                <input type="hidden" name="next" value="{{ next }}"> 
+                {% csrf_token %}
+                
+                
+                <div class="input-group mb-3">
+                    {{ form.password  }}
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="verificar">
+                            <!--Para las advertencias de validaciones
+                            <i class="fas fa-check-circle"></i>
+                            <i  class="fas fa-exclamation-circle">&nbsp;</i>-->
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    <!--<small>Error</small>-->
+                </div>
+                
+
+                <div class="input-group mb-3">
+                   {{ form.confirmar_password}}
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="verificar2">
+                            <!--Para las advertencias de validaciones
+                            <i class="fas fa-check-circle"></i>
+                            <i  class="fas fa-exclamation-circle">&nbsp;</i>-->
+                            <span class="fas fa-lock"></span>
+                            
+                        </div>
+                    </div>
+                    <!--<small>Las contraseñas no coinciden</small>-->
+                    
+                </div>
+                
+                <!--<input type="checkbox" id="chec" name="chec" class="ver contrasenia" onclick="mostrarContrasenia()" >
+		        <label for="chec" class="chec" font-size="2">Mostrar contraseña</label>
+                <br>-->
+                
+                
+                
+                
+                
+                
+                <div class="row"  >
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-success btn-block" id="mostrarBoton" ><!--style="border-color: gray; background-color: gray"-->
+                            <i class="fas fa-save"></i>&nbsp;&nbsp;Guardar Cambio
+                        </button>
+                    </a> 
+                    </div>
+                </div>
+                <br>
+                {% if reseteo_contrasenia == "si" %}
+                    <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h5><i class="icon fas fa-check"></i> ¡Cambio exitoso!</h5>
+                                    Se ha cambiado su contraseña.
+                    </div>
+                {% endif %}
+
+                {% if form.errors %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
+                                    <ul style="font-size:14px;">
+                                        {% for field in errores.error %}
+                                             {{ field }}
+                                        {% endfor %}
+                                    </ul>
+                            </div>
+                {% endif %}
+
+
+                <label><FONT COLOR="red" style="font-size:12px;"><a id='error'></a></FONT>
+                <FONT COLOR="green" style="font-size:12px;"><a id='noerror'></a></FONT></label>
+            </form>
+        </div>
+        
+    </div>
+    <div class="social-auth-links text-left">
+        <p>
+            <a href="{{ login_url }}" style="color:red; font-weight: bold; font-size:10px;">* Obligatorio en su primer ingreso cambiar contraseña</a>
+        </p>
+        </div>
+        
+    
+</div>
+
+
+</body>
+</html>
+

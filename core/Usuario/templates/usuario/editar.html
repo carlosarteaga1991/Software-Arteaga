@@ -7,8 +7,8 @@
 {% block contenido %}
 <div class="card-body">
         <form method="POST" action="." > 
-            <div class="card card-primary" >
-                <div class="" style=" color: blue; font-size: 11px; height: 22px; ">
+            <div class="card card-primary" > 
+                <div class="" style=" color: #3371FF; font-size: 11px; height: 22px; ">
                     <h3 class="card-title" >
                         &nbsp;<i class="fas fa-edit" style="font-size: 15px;"></i>
                         <strong>{{ titulo_lista }}</strong> <strong>{{nombre_usuario}}</strong>
@@ -21,7 +21,7 @@
                         {% if form.errors %}
                             <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                                <h5><i class="icon fas fa-ban"></i> ¡Alerta de Error!</h5>
                                 
                                 <ul>
                                     {% for field in form %}
@@ -186,29 +186,63 @@
             $("#id_puesto").chained("#id_departamento"); 
         // FIN SELECT ANIDADO
 
-        // VALIDAR CORREO
-            document.getElementById('id_email').addEventListener('input', function() {
-                campo = event.target;
-                campo2 = event.target;
-                valido = document.getElementById('emailOK');
-                invalido = document.getElementById('emailnoOK');
-                    
-                emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-                //Se muestra un texto a modo de ejemplo, luego va a ser un icono
-                if (emailRegex.test(campo.value)) {
-                valido.innerText = "Válido";
-                invalido.innerText = "";
-                } 
-
-                if (emailRegex.test(campo2.value)) {
-
-                } else {
-                invalido.innerText = "Incorrecto";
-                valido.innerText = "";
-                }
+// VALIDAR CORREO
+        document.getElementById('id_email').addEventListener('input', function() {
+            campo = event.target;
+            campo2 = event.target;
+            valido = document.getElementById('emailOK');
+            invalido = document.getElementById('emailnoOK');
                 
-            });
-        //FIN VALIDAR CORREO
+            emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+            if (emailRegex.test(campo.value)) {
+            document.getElementById("id_email").style.borderColor = "green";
+            valido.innerText = "Válido";
+            invalido.innerText = "";
+            } 
+
+            if (emailRegex.test(campo2.value)) {
+
+            } else {
+            document.getElementById("id_email").style.borderColor = "red";
+            invalido.innerText = "Incorrecto";
+            valido.innerText = "";
+            }
+            
+        });
+    //FIN VALIDAR CORREO
+
+    // INICIO ESPACIOS EN BLNCO
+        document.getElementById("id_nombres").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+
+        document.getElementById("id_apellidos").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+
+        document.getElementById("id_email").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+    // FIN ESPACIOS EN BLANCO
 
         </script>
 </div>

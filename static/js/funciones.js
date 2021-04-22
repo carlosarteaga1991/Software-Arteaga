@@ -1,3 +1,5 @@
+
+
 // INICIO MOSTRAR CONFIRMAR CONTRASEÑA 
 function mostrarContrasenia(){ 
  
@@ -164,15 +166,14 @@ function nombre(e) {
     }
     }
 
-    if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+    if ((letras.indexOf(tecla) == -1 && !tecla_especial) ) {
     return false;
     }
 }
 // FIN VALIDAR nombre
 
-// INICIO SELECT ANIDADO
-$("#id_puesto").chained("#id_departamento"); 
-// FIN SELECT ANIDADO
+
+
 
 // VALIDAR CORREO
 // no está funcionando aquí hay q colocarlo directo
@@ -206,3 +207,4 @@ function sinEspacios(e) {
  //número en código es 32
 }*/
 // FIN VALIDAR SIN ESPACIOS
+

@@ -354,7 +354,7 @@ class listar_usuarios(LoginRequiredMixin,ListView):
         context['plantilla'] = 'Usuarios'
         context['quitar_footer'] = 'si'
         context['titulo_lista'] = 'Usuarios existentes'
-        #context['create_url'] = reverse_lazy('crear_usuarios')
+        context['create_url'] = reverse_lazy('usuario:crear_usuarios')
         #context['url_salir'] = reverse_lazy('login:iniciar')
         departamento = departamentos.objects.filter(borrado=0,estado=1)
         puesto = puestos.objects.filter(borrado=0,estado=1)
@@ -363,9 +363,12 @@ class listar_usuarios(LoginRequiredMixin,ListView):
 
         # INICIO Colocar en todos lo siguiente variando lo que se envía
         context['titulo_cabecera'] = 'no'  # esto varia
-        context['link_home'] = reverse_lazy('usuario:inicio')
-        context['referencia_nombre'] = 'Lista de Usuarios'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Usuario'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['segunda_ref'] = "no" # esto varía
+        context['referencia_nombre2'] = ''  # esto varía
+        context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -416,23 +419,28 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
             registro = self.get_object()
             registro.id_puesto = int(request.POST['id_puesto'])
             registro.id_departamento = int(request.POST['id_departamento'])
-            registro.username = request.POST['username']
+            #registro.username = request.POST['username']
             registro.email = request.POST['email']
             registro.nombres = request.POST['nombres']
             registro.apellidos = request.POST['apellidos']
             registro.estado = request.POST['estado']
             registro.id_rol_id = request.POST['id_rol']
-            if request.POST['cambiar_contrasenia'] == '1':
-                registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
-                registro.password = make_password(request.POST['username'])
-            else:
-                registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
+            #if request.POST['cambiar_contrasenia'] == '1':
+            #    registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
+            #    registro.password = make_password(request.POST['username'])
+            #else:
+            #    registro.cambiar_contrasenia = request.POST['cambiar_contrasenia']
             registro.bloqueado = request.POST['bloqueado']
             registro.usuario_modificacion = int(request.user.id)
             registro.fch_modificacion = datetime.now()
             registro.save()
-            return redirect('listar_usuarios')
+            return redirect('usuario:listar_usuarios')
         except Exception as e:
+            form = self.form_class(request.POST)
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['form'] = form
+            return render(request, self.template_name,context)
             data['error'] = str(e)
         return JsonResponse(data)
     
@@ -465,9 +473,12 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
 
         # INICIO Colocar en todos lo siguiente variando lo que se envía
         context['titulo_cabecera'] = 'no'  # esto varia
-        context['link_home'] = reverse_lazy('usuario:inicio')
-        context['referencia_nombre'] = 'Editar de Usuario'  # esto varía
-        #context['link_referencia_nombre'] = reverse_lazy('usuario:editar_usuarios')  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Usuario'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['segunda_ref'] = "si" # esto varía
+        context['referencia_nombre2'] = 'Editar'  # esto varía
+        context['link_referencia_nombre2'] = ""   # esto varía
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -533,9 +544,12 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
 
         # INICIO Colocar en todos lo siguiente variando lo que se envía
         context['titulo_cabecera'] = 'no'  # esto varia
-        context['link_home'] = reverse_lazy('usuario:inicio')
-        context['referencia_nombre'] = 'Borrar Usuario'  # esto varía
-        #context['link_referencia_nombre'] = reverse_lazy('usuario:borrar_usuarios')  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Usuario'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['segunda_ref'] = "si" # esto varía
+        context['referencia_nombre2'] = 'Borrar'  # esto varía
+        context['link_referencia_nombre2'] = ""  # esto varía
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -567,4 +581,185 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
         # FIN PARA PROMESAS HEADER
         """
 
+        return context
+
+class crear_usuario(LoginRequiredMixin,CreateView):
+    model = usuario
+    form_class = form_crear_usuarios 
+    template_name = 'usuario/crear.html'
+    success_url = reverse_lazy('usuario:listar_usuarios')
+
+    
+    def post(self, request,*args,**kwargs):
+        data = {}
+        form = self.form_class(request.POST)
+
+        try:
+            #if form.is_valid():
+                nuevo = usuario(
+                    nombres = request.POST['nombres'],
+                    apellidos = request.POST['apellidos'],
+                    id_departamento = int(request.POST['id_departamento']),
+                    id_puesto = int(request.POST['id_puesto']),
+                    password = make_password(request.POST['username']),
+                    fch_creacion = datetime.now(),
+                    username = request.POST['username'],
+                    email = request.POST['email'],
+                    fch_ingreso_labores = request.POST['fch_ingreso_labores'],
+                    usuario_creacion = int(request.user.id),
+                    id_rol_id = int(request.POST['id_rol'])
+                )
+                nuevo.save()
+                return redirect('usuario:listar_usuarios') 
+            #else:
+                
+        except Exception as e:
+            #departamento = departamentos.objects.filter(borrado=0,estado=1)
+            #puesto = puestos.objects.filter(borrado=0,estado=1)
+            #rol = roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+            #return render(request, self.template_name, {'rol': rol,'puesto':puesto,'departamento':departamento,'form':form, 'quitar_footer': 'si','ya_existe': 'si','nombres_post':request.POST['nombres'],'apellidos_post':request.POST['apellidos'],'email_post':request.POST['email'],'user_post':request.POST['username'],'fecha_actual':request.POST['fch_ingreso_labores'], 'titulo_lista': 'Ingrese datos del nuevo usuario','plantilla': 'Crear'})
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['nombres_post'] = request.POST['nombres']
+            context['apellidos_post'] = request.POST['apellidos']
+            context['email_post'] = request.POST['email']
+            context['user_post'] = request.POST['username']
+            context['fecha_actual'] = request.POST['fch_ingreso_labores']
+            context['form'] = form
+            return render(request, self.template_name,context)
+            data['error'] = str(e)
+        return JsonResponse(data)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Crear Usuario'
+        context['btn_cancelar'] = reverse_lazy('usuario:listar_usuarios')
+        context['titulo_lista'] = 'Ingrese datos del nuevo usuario'
+        context['quitar_footer'] = 'si'
+        context['tipo'] = 'nuevo'
+        context['formguardarusuario'] = form_crear_usuarios()
+        departamento = departamentos.objects.filter(borrado=0,estado=1)
+        rol = roles.objects.filter(borrado=0,estado=1,tiene_permisos='Si')
+        puesto = puestos.objects.filter(borrado=0,estado=1)
+        context['departamento'] = departamento
+        context['puesto'] = puesto
+        context['rol'] = rol
+        now = datetime.now()
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        if len(str(now.day)) == 1:
+            dia = '0' + str(now.day)
+        else:
+            dia = str(now.day)
+        context['fecha_actual'] = str(now.year) + '-' + mes + '-' + dia
+
+        # INICIO Colocar en todos lo siguiente variando lo que se envía
+        context['titulo_cabecera'] = 'no'  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Usuario'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['segunda_ref'] = "si" # esto varía
+        context['referencia_nombre2'] = 'Crear'  # esto varía
+        context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
+        #  en todos lo siguiente variando lo que se envía
+        #mes
+        if len(str(self.request.user.fch_modificacion.month)) == 1:
+            mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
+        else:
+            mes_edit_perfil = str(self.request.user.fch_modificacion.month)
+        #dia
+        if len(str((self.request.user.fch_modificacion.day))) == 1:
+            dia_edit_perfil = '0' + str(self.request.user.fch_modificacion.day)
+        else:
+            dia_edit_perfil = str(self.request.user.fch_modificacion.day)
+        context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
+        context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
+        context['link_home'] = reverse_lazy('usuario:inicio')
+        # FIN Colocar en todos lo siguiente variando lo que se envía
+
+        """
+        # INICIO VERIFICACIÓN DE PERMISOS
+        context['permisos'] = asignar_permiso().metodo_permiso(3,'crear',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
+        # FIN VERIFICACIÓN DE PERMISOS
+
+        # INICIO PARA RECORDATORIOS HEADER
+        context['cont_alerta'] = alertas().recordatorios(self.request.user)
+        # FIN PARA RECORDATORIOS HEADER
+
+        # INICIO PARA PROMESAS HEADER 
+        context['cont_promesa'] = alertas().promesas(self.request.user)
+        context['cont_total'] = alertas().promesas(self.request.user) + alertas().recordatorios(self.request.user)
+        # FIN PARA PROMESAS HEADER
+        """
+        
+        return context
+
+class primer_ingreso_usuario(FormView):
+    form_class = form_primer_ingreso
+    template_name = 'usuario/primer_ingreso.html'
+    success_url = reverse_lazy('usuario:inicio')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request,*args,**kwargs):
+        if usuario.objects.filter(primer_ingreso=1,id=request.user.id).exists():
+            return super().dispatch(request,*args,**kwargs)#redirect('usuario:primer_ingreso_usuarios') 
+        return HttpResponseRedirect(self.success_url) 
+
+    # procedemos a sobre escribir el método POST
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            # Creamos una instancia del formulario
+            form = form_primer_ingreso(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
+            if form.is_valid():
+                user = usuario.objects.get(token=self.kwargs['token'])
+                # Para log
+                x = trigger.guardar(str(user.nombres) + " " + str(user.apellidos), "usuario",str(user.id),"Reseteo Contraseña",str(user.password),make_password(request.POST['password']),"password",trigger.get_ip(request),str(user.username))
+                x2 = trigger.guardar_historial_pass(make_password(request.POST['password']),trigger.get_ip(request),int(user.id))
+                user.set_password(request.POST['password'])
+                user.usuario_modificacion = user.id
+                user.fch_modificacion = datetime.now()
+                fch = datetime.now()
+                #mes
+                if len(str(fch.month)) == 1:
+                    mes = '0' + str(fch.month)
+                else:
+                    mes = str(fch.month)
+                #dia
+                if len(str(fch.day)) == 1:
+                    dia = '0' + str(fch.day)
+                else:
+                    dia = str(fch.day)
+                user.fch_ultimo_cambio_contrasenia = str(fch.year) + '/' + str(mes) + '/' + str(dia) + '  ' + datetime.today().strftime("%H:%M %p")
+                user.token = uuid.uuid4()
+                # Resetea el contador de los intentos fallidos, si está bloqueado tiene q hacerlo el superior o administrador del sistemas
+                user.intentos_fallidos = 0
+                user.save()
+                data['reseteo_contrasenia'] = 'si'
+            else:
+                data['error'] = form.errors
+            #si se está ysando CreateView colocar
+            self.object = None
+            context = self.get_context_data(**kwargs)
+            context['form'] = form
+            context['errores']=form.errors
+            context['reseteo_contrasenia'] = data['reseteo_contrasenia']
+        except Exception as e:
+            data['error'] = str(e)
+        return render(request, self.template_name, context)
+        #return JsonResponse(data, safe=False)
+
+    def form_valid(self, form):
+        pass
+        return HttpResponseRedirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['plantilla'] = 'Cambiar de Contraseña'
+        context['btn_cancelar'] = reverse_lazy('pagina_web')
+        context['login_url']= reverse_lazy('login:ingresar')
+        
         return context

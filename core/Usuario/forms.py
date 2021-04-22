@@ -10,6 +10,10 @@ from django.urls import reverse_lazy
 from django.contrib.admin import widgets
 
 from core.Usuario.models import *
+from datetime import datetime, date
+from django import forms
+
+
 
 
 class form_perfil_usuario(ModelForm):
@@ -47,7 +51,7 @@ class form_perfil_usuario(ModelForm):
     
         }
 
-class form_editar_usuarios(ModelForm):
+class form_crear_usuarios(ModelForm):
     user = usuario.objects.filter(borrado=0,estado=1)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,19 +59,19 @@ class form_editar_usuarios(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
-        self.fields['nombres'].widget.attrs['autofocus'] = True
+        #self.fields['nombres'].widget.attrs['autofocus'] = True
 
     class Meta():
         model = usuario
         
         fields = '__all__'
         # si deseo excluir ciertos campos coloco
-        exclude = ['primer_ingreso','fch_cambio_password','intentos_fallidos','fch_ultimo_cambio_contrasenia','fch_ultimo_login','imagen_perfil','fch_modificacion','usuario_modificacion','is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+        exclude = ['primer_ingreso','fch_cambio_password','intentos_fallidos','estado','bloqueado','nombres', 'apellidos','fch_ultimo_cambio_contrasenia','fch_ultimo_login','last_login','cambiar_contrasenia','id_rol_id','fch_ingreso_labores','token','ip_ultimo_acceso','imagen_perfil','fch_modificacion', 'usuario_modificacion', 'is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
 
         widgets = {
             'nombres': TextInput(
                 attrs={
-                    'placeholder': 'Ingrese los primeros nombres',
+                    'placeholder': 'Ingrese los nombres',
                     'onkeypress': 'return nombre(event)',
                 }
             ),
@@ -94,3 +98,109 @@ class form_editar_usuarios(ModelForm):
             )
             
         }
+
+class form_editar_usuarios(ModelForm):
+    user = usuario.objects.filter(borrado=0,estado=1)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['nombres'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = usuario
+        now = datetime.now()
+        if len(str(now.month)) == 1:
+            mes = '0' + str(now.month)
+        else:
+            mes = str(now.month)
+        if len(str(now.day)) == 1:
+            dia = '0' + str(now.day)
+        else:
+            dia = str(now.day)
+        
+        fields = '__all__'
+        # si deseo excluir ciertos campos coloco
+        exclude = ['primer_ingreso','username','fch_cambio_password','intentos_fallidos','fch_ultimo_cambio_contrasenia','fch_ultimo_login','last_login','cambiar_contrasenia','id_rol_id','token','ip_ultimo_acceso','imagen_perfil','fch_modificacion', 'usuario_modificacion', 'is_active','usuario_creacion','borrado','id_rol','password','last_login','ip_ultimo_acceso','usuario_administrador','id_departamento','id_puesto']
+
+        widgets = {
+            'nombres': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los nombres',
+                    'onkeypress': 'return nombre(event)',
+                    'minlength':'5',
+                }
+            ),
+            'apellidos': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese los apellidos',
+                    'onkeypress': 'return nombre(event)',
+                    'minlength':'5',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'placeholder': 'Formado por primero nombre y apellido, ejemplo: "nombre.apellido"',
+                }
+            ),
+            'username': TextInput(
+                attrs={
+                    'onkeypress': 'return usuario(event)',
+                }
+            ),
+            'fch_ingreso_labores': DateInput(
+                attrs={
+                    'type': 'date',
+                    'max': str(now.year) + '-' + mes + '-' + dia,
+                }
+            )
+            
+        }
+
+class form_primer_ingreso(forms.Form):
+    polit_contrasenia = politicas_contrasenia.objects.get()
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'placeholder': 'Ingrese su nueva contraseña',
+            'class': 'form-control',
+            'autocomplete': 'false',
+            'id': 'pass',
+            'minlength': polit_contrasenia.longitud_minima_contrasenia,
+            'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
+            'onkeypress': 'return caracteresContrasenia(event)'
+        }
+    ))
+
+    confirmar_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'placeholder': 'Confirme su contraseña',
+            'class': 'form-control',
+            'autocomplete': 'false',
+            'id': 'pass2',
+            'onkeyup': 'validarContrasenia(value)',
+            'minlength': polit_contrasenia.longitud_minima_contrasenia,
+            'maxlength': polit_contrasenia.longitud_maxima_contrasenia,
+            'onkeypress': 'return caracteresContrasenia(event)'
+        }
+    ))
+
+    # sobre escribimos el método clean para validar si el usuario existe
+    def clean(self):
+        cleaned = super().clean()
+        # Optenemos las contraseñas ingresadas por el usuario
+        password = cleaned['password']
+        confirmar_password = cleaned['confirmar_password']
+
+        if password != confirmar_password:
+            #para  mostrar los errores para quitarle '_all_'
+            self._errors['error'] = self._errors.get('error', self.error_class())
+            self._errors['error'].append('Las contraseñas no son iguales')
+            #raise forms.ValidationError('El usuario no existe')
+        return cleaned
+
+    # El siguiente método es para obtener el usuario
+    def get_user(self):
+        username = self.cleaned_data.get('username')
+        return usuario.objects.get(username=username)

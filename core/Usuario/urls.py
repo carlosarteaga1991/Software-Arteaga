@@ -33,6 +33,12 @@ urlpatterns = [
     path('editar/<int:pk>/',editar_usuario.as_view(), name='editar_usuarios'), 
 
     # Para borrar usuarios (SÍ requiere permisos)
-    path('borrar/<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'), 
+    path('borrar/<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'),
+
+    # Para crear usuarios (SÍ requiere permisos)
+    path('crear/',crear_usuario.as_view(), name='crear_usuarios'), 
+
+    # Para cprimer ingreso usuarios (no requiere permisos)
+    path('primerIngreso/',primer_ingreso_usuario.as_view(), name='primer_ingreso_usuarios'), 
 
 ]

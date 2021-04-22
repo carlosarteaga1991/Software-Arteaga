@@ -68,8 +68,8 @@ class UsuarioManager(BaseUserManager):
 class usuario(AbstractBaseUser):
     username = models.CharField('Usuario',max_length=20, unique=True)
     email = models.EmailField('Correo Electrónico', max_length=70,unique=True)
-    nombres = models.CharField('Nombres',max_length=30,blank= True, null = True)
-    apellidos = models.CharField('Apellidos',max_length=30,blank= True, null = True)
+    nombres = models.CharField('Nombres',max_length=40,blank= True, null = True)
+    apellidos = models.CharField('Apellidos',max_length=40,blank= True, null = True)
     imagen_perfil = models.ImageField('Imagen de Perfil',upload_to='perfil/%Y/%m/%d',height_field=None, width_field=None, max_length=200,blank=True, null=True)
     fch_ingreso_labores = models.DateField('Fecha de Ingreso a Laborar',blank= True, null = True)
     #al usar imagenes instakar # pip3 install pillow
@@ -82,11 +82,11 @@ class usuario(AbstractBaseUser):
     ip_ultimo_acceso = models.CharField(max_length=50, blank=True)
     fch_ultimo_login = models.CharField(max_length=70, blank=True)
     fch_ultimo_cambio_contrasenia = models.CharField(max_length=70, blank=True)
-    intentos_fallidos = models.IntegerField(default=0)
+    intentos_fallidos = models.IntegerField(default=0,blank=True, null=True)
     usuario_creacion = models.IntegerField(blank=True, null=True)
     fch_creacion = models.DateTimeField(auto_now_add=True)
-    fch_modificacion = models.DateTimeField(null=True)
-    fch_cambio_password = models.DateTimeField(null=True)
+    fch_modificacion = models.DateTimeField(blank=True, null=True)
+    fch_cambio_password = models.DateTimeField(blank=True, null=True)
     usuario_modificacion = models.IntegerField(blank=True,null=True)
     estado = models.CharField('Estado',max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
     borrado = models.CharField(max_length=1, default='0',choices=[('1','Si'),('0','No')])
@@ -108,7 +108,7 @@ class usuario(AbstractBaseUser):
         return self.username
 
     class Meta:
-        verbose_name_plural = "usuarios"
+        verbose_name_plural = "usuarios" 
         ordering = ['id']
     
     # Para traer la ruta absoluta de imagenes usamos

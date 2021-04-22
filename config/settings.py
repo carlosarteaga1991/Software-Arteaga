@@ -137,12 +137,12 @@ STATIC_URL = '/static/'
 # declaración de variable para usar archivos estáticos
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"), # _global
+    os.path.join(BASE_DIR, "static"), # _global 
 ]
 
 
 # para el login hay q indicarle a que URL nos dirigirá si es exitoso
-LOGIN_REDIRECT_URL = '/perfil/usuario/'
+LOGIN_REDIRECT_URL = '/usuario/'
 
 # para q direcciones en caso de darle salir sesión
 LOGOUT_REDIRECT_URL = '/login/'
