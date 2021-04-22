@@ -28,6 +28,17 @@ from core.Auditoria.trigger_log import trigger
 
 class inicio_usuario(LoginRequiredMixin, TemplateView):
     template_name = 'inicio_usuario.html'
+    success_url = reverse_lazy('usuario:inicio')
+    primer_ingreso_url = reverse_lazy('usuario:primer_ingreso_usuarios')
+
+    """
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        if usuario.objects.filter(primer_ingreso=1,id=request.user.id).exists():
+            return HttpResponseRedirect(self.primer_ingreso_url)
+        return HttpResponseRedirect(self.success_url) 
+    """
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -147,9 +158,12 @@ class editar_perfil_usuario(LoginRequiredMixin, UpdateView):
 
         # INICIO Colocar en todos lo siguiente variando lo que se envía
         context['titulo_cabecera'] = 'no'  # esto varia
-        context['link_home'] = reverse_lazy('usuario:inicio')
-        context['referencia_nombre'] = 'Editar Perfil'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy('usuario:editar_perfil')  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Editar Perfil'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:editar_perfil')  # esto varía
+        context['segunda_ref'] = "no" # esto varía
+        context['referencia_nombre2'] = 'Crear'  # esto varía
+        context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -303,8 +317,12 @@ class cambiar_password_usuario(LoginRequiredMixin, FormView):
         context['logo_titulo'] = 'fas fa-edit'
         context['titulo_cabecera'] = 'no'  # esto varia
         context['link_home'] = reverse_lazy('usuario:inicio')
-        context['referencia_nombre'] = 'Editar Contraseña'  # esto varía
-        context['link_referencia_nombre'] = reverse_lazy('usuario:editar_contrasenia')  # esto varía
+        context['primera_ref'] = "si" # esto varía
+        context['referencia_nombre1'] = 'Editar Contraseña'  # esto varía
+        context['link_referencia_nombre1'] = reverse_lazy('usuario:editar_contrasenia')  # esto varía
+        context['segunda_ref'] = "no" # esto varía
+        context['referencia_nombre2'] = 'Crear'  # esto varía
+        context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
         # Colocar en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -415,7 +433,44 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
     
     def post(self, request,*args,**kwargs):
         data = {}
+
+        # INICIO para log
         try:
+            user_edit = usuario.objects.get(id = self.kwargs['pk'])
+
+            if int(user_edit.id_departamento) != int(request.POST['id_departamento']) :
+                x4 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.id_departamento),str(request.POST['id_departamento']),"departamento",trigger.get_ip(request),str(request.user.username))                        
+            
+            if int(user_edit.id_puesto) != int(request.POST['id_puesto']):
+                x = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.id_puesto),str(request.POST['id_puesto']),"puesto",trigger.get_ip(request),str(request.user.username))
+
+            if user_edit.id_rol_id != int(request.POST['id_rol']):
+                x2 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.id_rol_id),str(request.POST['id_rol']),"rol",trigger.get_ip(request),str(request.user.username))                   
+
+            if user_edit.email != request.POST['email']:
+                x3 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.email),str(request.POST['email']),"email",trigger.get_ip(request),str(request.user.username))                        
+
+            if user_edit.nombres != request.POST['nombres']:
+                x5 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.nombres),str(request.POST['nombres']),"nombres",trigger.get_ip(request),str(request.user.username))
+
+            if user_edit.apellidos != request.POST['apellidos']:
+                x6 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.apellidos),str(request.POST['apellidos']),"apellidos",trigger.get_ip(request),str(request.user.username))
+
+            if str(user_edit.fch_ingreso_labores) != str(request.POST['fch_ingreso_labores']):
+                x7 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.fch_ingreso_labores),str(request.POST['fch_ingreso_labores']),"fch_ingreso_labores",trigger.get_ip(request),str(request.user.username))
+
+            if user_edit.estado != request.POST['estado']:
+                x8 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.estado),str(request.POST['estado']),"estado",trigger.get_ip(request),str(request.user.username))
+
+            if user_edit.bloqueado != request.POST['bloqueado']:
+                x9 = trigger.guardar(str(user_edit.nombres) + " " + str(user_edit.apellidos), "usuario",str(user_edit.id),"Modificar",str(user_edit.bloqueado),str(request.POST['bloqueado']),"bloqueado",trigger.get_ip(request),str(request.user.username))
+            
+        except Exception as e:
+            pass
+        # FIN para log
+
+        try:
+            
             registro = self.get_object()
             registro.id_puesto = int(request.POST['id_puesto'])
             registro.id_departamento = int(request.POST['id_departamento'])
@@ -529,6 +584,14 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
             registro.usuario_modificacion = int(request.user.id)
             registro.fch_modificacion = datetime.now()
             registro.save()
+            # INICIO para log
+            try:
+                id_borrado = usuario.objects.get(id = int(self.kwargs['pk']))
+                x = trigger.guardar(str(id_borrado.nombres) + " " + str(id_borrado.apellidos), "usuario", id_borrado.id,"Modificar", "0","1","borrado",trigger.get_ip(request), str(request.user.username))          
+
+            except Exception as e:
+                pass
+            # FIN para log
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data)
@@ -594,6 +657,8 @@ class crear_usuario(LoginRequiredMixin,CreateView):
         data = {}
         form = self.form_class(request.POST)
 
+        
+
         try:
             #if form.is_valid():
                 nuevo = usuario(
@@ -610,8 +675,18 @@ class crear_usuario(LoginRequiredMixin,CreateView):
                     id_rol_id = int(request.POST['id_rol'])
                 )
                 nuevo.save()
+                # INICIO para log
+                try:
+                    #if form.is_valid():
+                    id_creacion = usuario.objects.get(username = str(request.POST['username']))
+                    x = trigger.guardar(str(request.POST['nombres']) + " " + str(request.POST['apellidos']), "usuario", id_creacion.id,"Insertar", "",str(request.POST['username']),"username",trigger.get_ip(request), str(request.user.username))          
+
+                except Exception as e:
+                    pass
+                # FIN para log
                 return redirect('usuario:listar_usuarios') 
             #else:
+                
                 
         except Exception as e:
             #departamento = departamentos.objects.filter(borrado=0,estado=1)
@@ -705,9 +780,9 @@ class primer_ingreso_usuario(FormView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request,*args,**kwargs):
         if usuario.objects.filter(primer_ingreso=1,id=request.user.id).exists():
-            return super().dispatch(request,*args,**kwargs)#redirect('usuario:primer_ingreso_usuarios') 
+            return super().dispatch(request,*args,**kwargs)
         return HttpResponseRedirect(self.success_url) 
-
+ 
     # procedemos a sobre escribir el método POST
     def post(self, request, *args, **kwargs):
         data = {}
@@ -715,12 +790,13 @@ class primer_ingreso_usuario(FormView):
             # Creamos una instancia del formulario
             form = form_primer_ingreso(request.POST)  # le enviamos la información que llega del POST y la guardamos en una variable
             if form.is_valid():
-                user = usuario.objects.get(token=self.kwargs['token'])
+                user = usuario.objects.get(id=self.request.user.id)
                 # Para log
-                x = trigger.guardar(str(user.nombres) + " " + str(user.apellidos), "usuario",str(user.id),"Reseteo Contraseña",str(user.password),make_password(request.POST['password']),"password",trigger.get_ip(request),str(user.username))
+                x = trigger.guardar(str(user.nombres) + " " + str(user.apellidos), "usuario",str(user.id),"Primer Ingreso Cambio Contraseña",str(user.password),make_password(request.POST['password']),"password",trigger.get_ip(request),str(user.username))
                 x2 = trigger.guardar_historial_pass(make_password(request.POST['password']),trigger.get_ip(request),int(user.id))
                 user.set_password(request.POST['password'])
                 user.usuario_modificacion = user.id
+                user.primer_ingreso = 0
                 user.fch_modificacion = datetime.now()
                 fch = datetime.now()
                 #mes
@@ -734,7 +810,6 @@ class primer_ingreso_usuario(FormView):
                 else:
                     dia = str(fch.day)
                 user.fch_ultimo_cambio_contrasenia = str(fch.year) + '/' + str(mes) + '/' + str(dia) + '  ' + datetime.today().strftime("%H:%M %p")
-                user.token = uuid.uuid4()
                 # Resetea el contador de los intentos fallidos, si está bloqueado tiene q hacerlo el superior o administrador del sistemas
                 user.intentos_fallidos = 0
                 user.save()
@@ -758,7 +833,7 @@ class primer_ingreso_usuario(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['plantilla'] = 'Cambiar de Contraseña'
+        context['plantilla'] = 'Primer Ingreso'
         context['btn_cancelar'] = reverse_lazy('pagina_web')
         context['login_url']= reverse_lazy('login:ingresar')
         

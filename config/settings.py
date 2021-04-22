@@ -142,7 +142,7 @@ STATICFILES_DIRS = [
 
 
 # para el login hay q indicarle a que URL nos dirigirá si es exitoso
-LOGIN_REDIRECT_URL = '/usuario/'
+LOGIN_REDIRECT_URL = '/usuario/primerIngreso/' #antes estaba: '/usuario/'
 
 # para q direcciones en caso de darle salir sesión
 LOGOUT_REDIRECT_URL = '/login/'

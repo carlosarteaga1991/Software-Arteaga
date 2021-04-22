@@ -63,10 +63,17 @@
 
       <h2><strong>Soft</strong><a href="{{ btn_cancelar }}"><span>ArtPort </span></a></h2>
       
-        <a href="{% url 'login:salir' %}" class="btn btn-danger btn-block  " style="width:9%; font-size:13px; right: 125px;">
+        {% if reseteo_contrasenia == "si" %}
+            <a href="{% url 'login:ingresar' %}" class="btn btn-primary btn-block  " style="width:9%; font-size:13px; right: 125px;">
+            <i class="fas fa-sign-out-alt"></i>
+            </i>&nbsp;&nbsp;<strong>LogIn</strong>
+            </a>
+        {% else %}
+            <a href="{% url 'login:salir' %}" class="btn btn-danger btn-block  " style="width:9%; font-size:13px; right: 125px;">
             <i class="fas fa-sign-out-alt"></i>
             </i>&nbsp;&nbsp;<strong>Salir</strong>
         </a>
+        {% endif %}
 
     </div>
   </header><!-- End Header -->
@@ -143,7 +150,7 @@
                             <div class="alert alert-danger alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                 <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
-                                    <ul style="font-size:14px;">
+                                    <ul style="font-size:12px;">
                                         {% for field in errores.error %}
                                              {{ field }}
                                         {% endfor %}
