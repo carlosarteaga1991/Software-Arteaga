@@ -3,76 +3,95 @@
 {% load humanize %}
 
 
+
 {% block contenido %}
 
+
 <style>
-.slider {
-    width:100%;
-    margin: auto;
-    overflow: hidden;
-}
+    .slider {
+        width:100%;
+        margin: auto;
+        overflow: hidden;
+    }
 
-.slider li {
-    list-style: none;
-    width:100%;/*no afecta*/
-}
+    .slider li {
+        list-style: none;
+        width:100%;/*no afecta*/
+    }
 
-.slider p {
-    width:660px; 
-    height:160px; 
-    display:block; 
-    margin:auto;
-    font-family: Arial;
-    font-weight: bold;
-    color: #6CA3FC;
-    font-size: 20px;
-}
+    .slider p {
+        width:660px; 
+        height:160px; 
+        display:block; 
+        margin:auto;
+        font-family: Arial;
+        font-weight: bold;
+        color: #6CA3FC;
+        font-size: 20px;
+    }
 
-.slider ul {
-    display: flex; /*para colocarlas una al lado de la otra*/
-    padding: 0%
-    width: 100%;
+    .slider ul {
+        display: flex; /*para colocarlas una al lado de la otra*/
+        padding: 0%
+        width: 100%;
 
-    animation: cambio 15s infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in;
-}
-/*
-.slider:nth-child(2) ul {
-    display: flex; 
-    padding: 0%
-    width: 100%;
+        animation: cambio 15s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease-in;
+    }
+    /*
+    .slider:nth-child(2) ul {
+        display: flex; 
+        padding: 0%
+        width: 100%;
 
-    animation: cambio 20s infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in;
-}*/
+        animation: cambio 20s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease-in;
+    }*/
 
-.slider img {
-    width:655px; 
-    height:120px; 
-    display:block; 
-    margin:auto;
-    border-radius: 5px;
-}
+    .slider img {
+        width:655px; 
+        height:120px; 
+        display:block; 
+        margin:auto;
+        border-radius: 5px;
+    }
 
-@keyframes cambio {
-    /*el timepo de cambio de cada imagen es de un segundo*/
-    0% { margin-left: 0; }
-    40% { margin-left: 0; }
-    /*la segunda imagen estará 4 segundos y la primera un segundo*/
-    50% { margin-left: -105%; }
-    100% { margin-left: -105%; }
+    @keyframes cambio {
+        /*el timepo de cambio de cada imagen es de un segundo*/
+        0% { margin-left: 0; }
+        40% { margin-left: 0; }
+        /*la segunda imagen estará 4 segundos y la primera un segundo*/
+        50% { margin-left: -105%; }
+        100% { margin-left: -105%; }
 
-    /*50% { margin-left: -200%; }
-    70% { margin-left: -200%; }
+        /*50% { margin-left: -200%; }
+        70% { margin-left: -200%; }
 
-    75% { margin-left: -300%; }
-    100% { margin-left: -300%; }*/
-}
+        75% { margin-left: -300%; }
+        100% { margin-left: -300%; }*/
+    }
 </style>
 
 <div class="card-body">
+
+<section id="hero" class="d-flex flex-column justify-content-center align-items-center" >
+    <div class="hero-container" data-aos="fade-in" style="width: 55%; text-align: center;: center;">
+      <h1 style="">{% if tiempo_AM_PM == "AM" %}
+            <strong>Buenos días</strong>
+        {% else %}
+            <strong>Buenas tardes</strong>
+        {% endif %} 
+    </h1>
+     
+     <h3>
+      <p style="color:black; "><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales."></span></p>
+     </h3> 
+      
+    </div>
+  </section>
+
     <div class="row" >
 
         <!--Primer contenedor de información-->
@@ -86,7 +105,7 @@
                 </div>-->
                 <div  class="" >
                     <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
-                        <img src="{{ request.user.get_image }}" class="img-fluid mb-2 img-circle elevation-1" alt="white sample" style="width:330px; height:333px; display:block; margin:auto; outline:none;">
+                        <img src="{{ request.user.get_image }}" class="img-fluid mb-2 img-thumbnail elevation-1" alt="white sample" style="width:330px; height:333px; display:block; margin:auto; outline:none;">
                     </a>
                 </div>
             
@@ -95,6 +114,8 @@
         
         </div>
         <!-- /. Primer contenedor de información-->
+
+
 
         <!--Segundo contenedor de información-->
         <div class="col-lg-6 col-6">
@@ -119,6 +140,8 @@
 </div>
 
 <hr>
+
+
 <div class="card-body">
     <div class="row" >
         <div class="col-lg-6 col-6">

@@ -37,7 +37,10 @@
     <script src="{% static 'js/jquery.chained.js' %}"></script>
     <script src="{% static 'js/jquery.chained.min.js' %}"></script>
 
+ 
     
+
+        
     
     {% block head %}
 
@@ -62,7 +65,7 @@
                     <div class="row">
                     <div class="col-sm-6">
                             <h1 class="m-0 text-dark"> 
-                        {% if titulo_cabecera == 'no' %}
+                        <!--{% if titulo_cabecera == 'no' %}
                         
                             
                             
@@ -73,7 +76,8 @@
                                 Buenas tardes
                                 {% endif %} 
                                 <small>{{ request.user.nombres }}  {{ request.user.apellidos }}</small></h1>
-                            {% endif %}
+                                
+                            {% endif %}-->
                             
                              
                         </div>
@@ -109,5 +113,13 @@
     {% endblock  %}
 </body>
 {% endblock body %}
+
+    <!-- Vendor CSS Files para efecto de home de inicio-->
+        <!-- Vendor JS Files -->
+        <script src="{% static 'lib/otro_homepage/iPortfolio-bootstrap-4/iPortfolio/assets/vendor/typed.js/typed.min.js' %}"></script>
+
+        <!-- Template Main JS File -->
+        <script src="{% static 'lib/otro_homepage/iPortfolio-bootstrap-4/iPortfolio/assets/js/main.js' %}"></script>
+    <!-- /. Vendor CSS Files para efecto de home de inicio-->
 </html>
 
