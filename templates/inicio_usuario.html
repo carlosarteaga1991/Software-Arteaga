@@ -8,38 +8,37 @@
 
 
 <style>
-    .slider {
-        width:100%;
+.slider {
+        width: 95%;
+        height: 100%;
         margin: auto;
         overflow: hidden;
     }
 
-    .slider li {
-        list-style: none;
-        width:100%;/*no afecta*/
-    }
-
-    .slider p {
-        width:660px; 
-        height:160px; 
-        display:block; 
-        margin:auto;
-        font-family: Arial;
-        font-weight: bold;
-        color: #6CA3FC;
-        font-size: 20px;
-    }
-
-    .slider ul {
+.slider ul {
+        padding: 0;
         display: flex; /*para colocarlas una al lado de la otra*/
-        padding: 0%
-        width: 100%;
+        width: 400%; /*x son 4 imágenes */
 
-        animation: cambio 15s infinite;
+        animation: cambio 20s infinite;
         animation-direction: alternate;
         animation-timing-function: ease-in;
     }
-    /*
+
+.slider li {
+        list-style: none;
+        width: 100%;/*no afecta*/
+    }
+
+.slider img {
+        width:100%; 
+        /*height:120px; 
+        display:block; 
+        margin:auto;*/
+        border-radius: 5px;
+    }
+
+/*
     .slider:nth-child(2) ul {
         display: flex; 
         padding: 0%
@@ -49,34 +48,25 @@
         animation-direction: alternate;
         animation-timing-function: ease-in;
     }*/
-
-    .slider img {
-        width:655px; 
-        height:120px; 
-        display:block; 
-        margin:auto;
-        border-radius: 5px;
-    }
-
-    @keyframes cambio {
+@keyframes cambio {
         /*el timepo de cambio de cada imagen es de un segundo*/
         0% { margin-left: 0; }
-        40% { margin-left: 0; }
+        20% { margin-left: 0; }
         /*la segunda imagen estará 4 segundos y la primera un segundo*/
-        50% { margin-left: -105%; }
-        100% { margin-left: -105%; }
+        25% { margin-left: -100%; }
+        45% { margin-left: -100%; }
 
-        /*50% { margin-left: -200%; }
+        50% { margin-left: -200%; }
         70% { margin-left: -200%; }
 
         75% { margin-left: -300%; }
-        100% { margin-left: -300%; }*/
+        100% { margin-left: -300%; }
     }
 </style>
 
 <div class="card-body">
 
-<section id="hero" class="d-flex flex-column justify-content-center align-items-center" >
+<section id="" class="d-flex flex-column justify-content-center align-items-center" >
     <div class="hero-container" data-aos="fade-in" style="width: 55%; text-align: center;: center;">
       <h1 style="">{% if tiempo_AM_PM == "AM" %}
             <strong>Buenos días</strong>
@@ -86,40 +76,187 @@
     </h1>
      
      <h3>
-      <p style="color:black; "><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales."></span></p>
+      <p style="color:black; "><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales, Su correo es: {{ request.user.email }}"></span></p>
      </h3> 
       
     </div>
-  </section>
+</section>
 
-    <div class="row" >
 
-        <!--Primer contenedor de información-->
+<style>
+    .content {
+        padding: 30px;
+        padding-left: 4%;
+        border-width: 3px;
+        border-style: solid;
+        border-color: #6CA3FC;
+        background-color: white;/*#6CA3FC;*/
+      
+        border-radius: 5px;
+        color: black;
+        width: 100%;
+        
+    }
+
+    .content h6 {
+        color: black;
+    }
+
+    /* INICIO Animación personalizada */
+
+    @keyframes fadeInUp {
+        from {
+            transform: translate3d(0,60px,0)
+        }
+
+        to {
+            transform: translate3d(0,0,0);
+            opacity: 1
+        }
+    }
+
+    @-webkit-keyframes fadeInUp {
+        from {
+            transform: translate3d(0,40px,0)
+        }
+
+        to {
+            transform: translate3d(0,0,0);
+            opacity: 1
+        }
+    }
+
+    .animated {
+        animation-duration: 2s;
+        animation-fill-mode: both;
+        -webkit-animation-duration: 2s;
+        -webkit-animation-fill-mode: both
+    }
+
+    .animatedFadeInUp {
+        opacity: 0
+    }
+
+    .fadeInUp {
+        opacity: 0;
+        animation-name: fadeInUp;
+        -webkit-animation-name: fadeInUp;
+    }
+    /* FIN Animación personalizada */
+</style>
+<section  class="why-us">
+      <div class="container">
+
+        <div class="row" >
+          <div class="col-xl-3  animated animatedFadeInUp fadeInUp">
+            <div class=""><!--content-->
+              <div  class="" >
+                    <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
+                        <img src="{{ request.user.get_image }}" class="img-fluid mb-1 img-thumbnail elevation-1" alt="white sample" style="width:300px; height:300px; display:block; margin:auto; outline:none;">
+                    </a>
+                </div>
+              <!--<div class="text-center">
+                <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
+              </div>-->
+            </div>
+          </div>
+          <div class="col-xl-9 d-flex" >
+            <div class=" d-flex flex-column justify-content-center" >
+              <div class="row">
+                <div class="col-xl-3 d-flex animated animatedFadeInUp fadeInUp" data-aos-delay="100" >
+                  <div class="icon-box mt-4 mt-xl-0 content" >
+              
+                    <h6><strong>Departamento&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></h6>
+                    <p>{{ departamento.nombre }}</p>
+                    <br>
+                    <br>
+                    <h6><strong>Puesto</strong></h6>
+                    <p>{{ puesto.nombre }}</p>
+                    
+                    
+                  </div>
+                </div>
+                <div class="col-xl-3 d-flex animated animatedFadeInUp fadeInUp"  data-aos-delay="200">
+                  <div class="icon-box mt-4 mt-xl-0 content">
+                   
+                    <h6><strong>Laborando desde</strong></h6>
+                    <p>{{ request.user.fch_ingreso_labores.year }}/{% if request.user.fch_ingreso_labores.month < 10 %}
+                    0{{ request.user.fch_ingreso_labores.month }}
+                    {% else %}
+                    {{ request.user.fch_ingreso_labores.month }}
+                    {% endif %}/{% if request.user.fch_ingreso_labores.day < 10 %}
+                    0{{ request.user.fch_ingreso_labores.day }}
+                    {% else %}
+                    {{ request.user.fch_ingreso_labores.day }}
+                    {% endif %}</p>
+                    <br>
+                    <br>
+                    <h6><strong>Próximo cambio contraseña</strong></h6>
+                    <p>{{ request.user.fch_cambio_password.year }}/{% if request.user.fch_cambio_password.month < 10 %}
+                    0{{ request.user.fch_cambio_password.month }}
+                    {% else %}
+                    {{ request.user.fch_cambio_password.month }}
+                    {% endif %}/{% if request.user.fch_cambio_password.day < 10 %}
+                    0{{ request.user.fch_cambio_password.day }}}
+                    {% else %}
+                    {{ request.user.fch_cambio_password.day }}
+                    {% endif %}</p>
+                  </div>
+                </div>
+                <div class="col-xl-3 d-flex  animated animatedFadeInUp fadeInUp"  data-aos-delay="300" >
+                  <div class="icon-box mt-4 mt-xl-0 content">
+                   
+                    <h6><strong>LogIn Fallidos</strong></h6>
+                    <p>{{ request.user.intentos_fallidos }}</p>
+                   <br>
+                   <br>
+                    <h6><strong>Estado&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></h6>
+                    <p>{{ estado }}</p>
+                 
+
+                  </div>
+                </div>
+
+                <div class="col-xl-3 d-flex  animated animatedFadeInUp fadeInUp"  data-aos-delay="300">
+                  <div class="icon-box mt-4 mt-xl-0 content">
+                   
+                    <h6><strong>Último LogIn</strong></h6>
+                    <p>{{ request.user.fch_ultimo_login }}</p>
+                   <br>
+                    <h6><strong>Último cambio contraseña</strong></h6>
+                    <p>{{ request.user.fch_ultimo_cambio_contrasenia}}</p>
+                 
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+</section>
+
+
+    <!--<div class="row" >
+
+        
         <div class="col-lg-6 col-6" >
-            <div class=""><!--small-box bg-info-->
-            
-                <!--<div class="inner" style="background-color: #FFFF; ">
-                    <div class="image" >
-                        <img src="{{ request.user.get_image }}" class="img-circle elevation-1" alt="User Image" style="width:330px; height:333px;display:block; margin:auto;">
-                    </div>
-                </div>-->
+            <div class="">
                 <div  class="" >
                     <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
                         <img src="{{ request.user.get_image }}" class="img-fluid mb-2 img-thumbnail elevation-1" alt="white sample" style="width:330px; height:333px; display:block; margin:auto; outline:none;">
                     </a>
                 </div>
-            
-
             </div>
-        
         </div>
-        <!-- /. Primer contenedor de información-->
+       
 
 
 
-        <!--Segundo contenedor de información-->
+       
         <div class="col-lg-6 col-6">
-            <div class=""><!--small-box bg-info-->
+            <div class="">
                 <div class="inner" style="color: black; background-color: #FFFF;">
                     <h4><strong ></i>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ departamento.nombre }}</h4>
                     <h4><strong >Puesto: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{ puesto.nombre }}</h4>
@@ -133,45 +270,30 @@
                 </div>
             </div>
         </div>
-        <!-- /. Segundo contenedor de información-->
+      
     
 
+        </div>
+    </div>-->
+<br>
+
+
+<div class="">
+    <div class="slider animated animatedFadeInUp fadeInUp">
+        <ul>
+            <li><img src="{% static 'img/slider/mision.png' %}" alt="" ></li>
+            <!--<li><p align="center">Ser parte de la incorporación tecnológica hondureña, para fomentar el uso de 
+            sistemas de información que matengan una comunicación eficiente y eficaz hacia los
+            clientes que se relacionan directa o indirectamente con las pequeñas y medianas empresas.</p></li>-->
+            <li><img src="{% static 'img/slider/vision.png' %}" alt="" ></li>
+            <!--<li><p align="center"> &nbsp;Generar crecimiento y expansión para las MYPYME y PYMES, que no pueden contar con un sistema 
+            centralizado de datos para administrar sus clientes.</p></li>-->
+            <li><img src="{% static 'img/slider/mision.png' %}" alt="" ></li>
+            <li><img src="{% static 'img/slider/vision.png' %}" alt="" ></li>
+        </ul>
     </div>
 </div>
 
-<hr>
-
-
-<div class="card-body">
-    <div class="row" >
-        <div class="col-lg-6 col-6">
-            <div class="slider">
-                <ul>
-                    <li><img src="{% static 'img/slider/mision.png' %}" alt="" ></li>
-                    <li><p align="center"> &nbsp;Generar crecimiento y expansión para las MYPYME y PYMES, que no pueden contar con un sistema 
-              centralizado de datos para administrar sus clientes.</p></li>
-                    <!--<li><img src="{% static 'img/slider/vision.png' %}" alt="" ></li>
-                    <li><img src="{% static 'img/slider/misionno.png' %}" alt="" ></li>-->
-                </ul>
-            </div>
-            
-        </div>
-
-        <div class="col-lg-6 col-6">
-            <div class="slider">
-                <ul>
-                    <li><p align="center">Ser parte de la incorporación tecnológica hondureña, para fomentar el uso de 
-                    sistemas de información que matengan una comunicación eficiente y eficaz hacia los
-                    clientes que se relacionan directa o indirectamente con las pequeñas y medianas empresas.</p></li>
-                    <li><img src="{% static 'img/slider/vision.png' %}" alt="" ></li>
-                    <!--<li><img src="{% static 'img/slider/mision-vision-valores.png' %}" alt="" ></li>
-                    <li><img src="{% static 'img/slider/misionno.png' %}" alt="" ></li>-->
-                </ul>
-            </div>
-            
-        </div>
-    </div>
-</div>
 
 
 

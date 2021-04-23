@@ -74,7 +74,7 @@ class inicio_usuario(LoginRequiredMixin, TemplateView):
         context['departamento'] = departameto
         context['puesto'] = puesto
 
-        context['quitar_footer'] = 'no'
+        context['quitar_footer'] = 'si'
 
         # INICIO VERIFICACIÓN DE PERMISOS
         #context['permisos'] = asignar_permiso().metodo_permiso(28,'ver',int(self.request.user.id_rol_id),self.request.user.usuario_administrador)
