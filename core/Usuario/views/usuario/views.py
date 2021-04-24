@@ -156,15 +156,16 @@ class editar_perfil_usuario(LoginRequiredMixin, UpdateView):
         context['btn_cancelar'] = reverse_lazy('usuario:inicio')
         context['titulo_lista'] = 'Editar Perfil de '
 
-        # INICIO Colocar en todos lo siguiente variando lo que se envía
+        # ======INICIO Colocar en todos lo siguiente variando lo que se envía======
         context['titulo_cabecera'] = 'no'  # esto varia
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Editar Perfil'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:editar_perfil')  # esto varía
+        context['color1'] = 'gray'
         context['segunda_ref'] = "no" # esto varía
         context['referencia_nombre2'] = 'Crear'  # esto varía
         context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
-        #  en todos lo siguiente variando lo que se envía
+        context['color2'] = ''
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
             mes_edit_perfil = '0' + str(self.request.user.fch_modificacion.month)
@@ -178,7 +179,7 @@ class editar_perfil_usuario(LoginRequiredMixin, UpdateView):
         context['fch_modificacion_perfil'] = str(self.request.user.fch_modificacion.year) + "/" + str(mes_edit_perfil) + "/" + str(dia_edit_perfil)
         context['fch_modificacion_password'] = self.request.user.fch_ultimo_cambio_contrasenia[0:10]
         context['link_home'] = reverse_lazy('usuario:inicio')
-        # FIN Colocar en todos lo siguiente variando lo que se envía
+        # ======FIN Colocar en todos lo siguiente variando lo que se envía======
 
 
         """
@@ -320,9 +321,11 @@ class cambiar_password_usuario(LoginRequiredMixin, FormView):
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Editar Contraseña'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:editar_contrasenia')  # esto varía
+        context['color1'] = 'gray'
         context['segunda_ref'] = "no" # esto varía
         context['referencia_nombre2'] = 'Crear'  # esto varía
         context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
+        context['color2'] = ''
         # Colocar en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -384,9 +387,11 @@ class listar_usuarios(LoginRequiredMixin,ListView):
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Usuario'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['color1'] = 'gray'
         context['segunda_ref'] = "no" # esto varía
         context['referencia_nombre2'] = ''  # esto varía
         context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
+        context['color2'] = ''
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -531,9 +536,11 @@ class editar_usuario(LoginRequiredMixin,UpdateView):
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Usuario'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['color1'] = ''
         context['segunda_ref'] = "si" # esto varía
         context['referencia_nombre2'] = 'Editar'  # esto varía
         context['link_referencia_nombre2'] = ""   # esto varía
+        context['color2'] = 'gray'
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -587,7 +594,7 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
             # INICIO para log
             try:
                 id_borrado = usuario.objects.get(id = int(self.kwargs['pk']))
-                x = trigger.guardar(str(id_borrado.nombres) + " " + str(id_borrado.apellidos), "usuario", id_borrado.id,"Modificar", "0","1","borrado",trigger.get_ip(request), str(request.user.username))          
+                x = trigger.guardar(str(id_borrado.nombres) + " " + str(id_borrado.apellidos), "usuario", id_borrado.id,"Borrar", "0","1","borrado",trigger.get_ip(request), str(request.user.username))          
 
             except Exception as e:
                 pass
@@ -610,9 +617,11 @@ class borrar_usuario(LoginRequiredMixin,DeleteView):
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Usuario'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['color1'] = ''
         context['segunda_ref'] = "si" # esto varía
         context['referencia_nombre2'] = 'Borrar'  # esto varía
         context['link_referencia_nombre2'] = ""  # esto varía
+        context['color2'] = 'gray'
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -736,9 +745,11 @@ class crear_usuario(LoginRequiredMixin,CreateView):
         context['primera_ref'] = "si" # esto varía
         context['referencia_nombre1'] = 'Usuario'  # esto varía
         context['link_referencia_nombre1'] = reverse_lazy('usuario:listar_usuarios')  # esto varía
+        context['color1'] = ''
         context['segunda_ref'] = "si" # esto varía
         context['referencia_nombre2'] = 'Crear'  # esto varía
         context['link_referencia_nombre2'] = reverse_lazy('usuario:crear_usuarios')  # esto varía
+        context['color2'] = 'gray'
         #  en todos lo siguiente variando lo que se envía
         #mes
         if len(str(self.request.user.fch_modificacion.month)) == 1:
@@ -838,3 +849,4 @@ class primer_ingreso_usuario(FormView):
         context['login_url']= reverse_lazy('login:ingresar')
         
         return context
+

@@ -11,7 +11,8 @@ from core.homepage.views import IndexView
 from core.login.views import login
 
 # Importanto para inicio usuario
-from core.Usuario.views import *
+from core.Usuario.views.usuario.views import *
+from core.Usuario.views.perfiles_roles.views import *
 
 app_name = 'usuario'
 
@@ -38,7 +39,8 @@ urlpatterns = [
     # Para crear usuarios (SÍ requiere permisos)
     path('crear/',crear_usuario.as_view(), name='crear_usuarios'), 
 
-    # Para cprimer ingreso usuarios (no requiere permisos)
+    # Para primer ingreso usuarios (no requiere permisos)
     path('primerIngreso/',primer_ingreso_usuario.as_view(), name='primer_ingreso_usuarios'), 
+
 
 ]

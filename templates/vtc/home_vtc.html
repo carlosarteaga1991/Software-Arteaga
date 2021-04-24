@@ -96,10 +96,10 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="{% url 'usuario:inicio' %}">Home</a></li>
                                 {% if primera_ref == "si" %}
-                                    <li class="breadcrumb-item"><a href="{{ link_referencia_nombre1 }}"> {{ referencia_nombre1 }} </a></li>
+                                    <li class="breadcrumb-item"><a style="color: {{color1}}" href="{{ link_referencia_nombre1 }}"> {{ referencia_nombre1 }} </a></li>
                                 {% endif %}
                                 {% if segunda_ref == "si" %}
-                                    <li class="breadcrumb-item"><a href="{{ link_referencia_nombre2 }}"> {{ referencia_nombre2 }} </a></li>
+                                    <li class="breadcrumb-item" ><a style="color: {{color2}}" href="{{ link_referencia_nombre2 }}"> {{ referencia_nombre2 }} </a></li>
                                 {% endif %}
                                 
                             </ol>
@@ -145,5 +145,6 @@
 
 
     <!-- /. Vendor CSS Files para efecto de home de inicio-->
+  
 </html>
 

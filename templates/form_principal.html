@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block contenido %}
+<div class="card-body">
+    <form method="POST" action="." enctype="multipart/form-data" style="padding-top: 7%"> <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
+        <div class="card card-primary" >
+            <div class="" style=" color: #3371FF; font-size: 11px; height: 22px; ">
+                <h3 class="card-title" >
+                    &nbsp;<i class="fas fa-plus" style="font-size: 15px;"></i>
+                    <strong>{{ titulo_lista }}</strong> <strong>{{nombre_cliente}}</strong>
+                </h3>
+            </div> 
+            <div class="card-body">
+                {% csrf_token %}
+                <input type="hidden" name="action" value='{{ action }}'>
+
+                <!-- verificaciones de errores antes de guardar -->
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-ban"></i> Ha ocurrido un error al querer guardar el registro</h5>
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <!-- /. verificaciones de errores antes de guardar -->
+
+              
+                
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group" style="font-size: 12px;">
+                        <label for="email">{{ field.label }}</label>
+                        {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                    </div>
+
+                {% endfor %}
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+                <div class = "card-footer" >
+
+                        <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+    
+
+                    <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger" style="position: absolute; right: 125px;">
+                        <i class="fas fa-times"></i></i> Cancelar
+                    </a> 
+                
+                </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+</div>
+
+<script type="application/javascript">
+
+// VALIDAR CORREO
+        /*document.getElementById('id_email').addEventListener('input', function() {
+            campo = event.target;
+            campo2 = event.target;
+            valido = document.getElementById('emailOK');
+            invalido = document.getElementById('emailnoOK');
+                
+            emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    
+            if (emailRegex.test(campo.value)) {
+            document.getElementById("id_email").style.borderColor = "green";
+            valido.innerText = "Válido";
+            invalido.innerText = "";
+            } 
+
+            if (emailRegex.test(campo2.value)) {
+
+            } else {
+            document.getElementById("id_email").style.borderColor = "red";
+            invalido.innerText = "Incorrecto";
+            valido.innerText = "";
+            }
+            
+        });*/
+    //FIN VALIDAR CORREO
+
+    // INICIO SELECT ANIDADO
+    /*    $("#id_puesto").chained("#id_departamento"); */
+    // FIN SELECT ANIDADO
+
+    // INICIO ESPACIOS EN BLNCO
+        document.getElementById("id_nombres").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+
+        document.getElementById("id_apellidos").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+
+        document.getElementById("id_email").addEventListener("keydown", teclear);
+        var flag = false;
+        var teclaAnterior = "";
+        function teclear(event) {
+        teclaAnterior = teclaAnterior + " " + event.keyCode;
+        var arregloTA = teclaAnterior.split(" ");
+        if (event.keyCode == 32 && arregloTA[arregloTA.length - 2] == 32) {
+            event.preventDefault();  }
+        }
+    // FIN ESPACIOS EN BLANCO
+
+
+</script>
+
+
+{% endblock  %}
+
+
+

@@ -204,3 +204,32 @@ class form_primer_ingreso(forms.Form):
     def get_user(self):
         username = self.cleaned_data.get('username')
         return usuario.objects.get(username=username)
+
+class form_roles(ModelForm):
+    user = roles.objects.filter(borrado=0,estado=1)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['nombre'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = roles
+        
+        fields = '__all__'
+        # si deseo excluir ciertos campos coloco
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','tiene_permisos']
+
+        widgets = {
+            'nombre': TextInput(
+                attrs={
+                    'onkeypress': 'return nombre(event)',
+                    'placeholder': 'Ingrese el nombre del perfil',
+                    'minlength': '8',
+                    'id': 'id_nombres',
+                }
+            )
+    
+        }

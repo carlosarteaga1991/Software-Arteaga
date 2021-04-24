@@ -62,13 +62,15 @@
         75% { margin-left: -300%; }
         100% { margin-left: -300%; }
     }
+
+
 </style>
 
 <div class="card-body">
 
 <section id="" class="d-flex flex-column justify-content-center align-items-center" >
     <div class="hero-container" data-aos="fade-in" style="width: 55%; text-align: center;: center;">
-      <h1 style="">{% if tiempo_AM_PM == "AM" %}
+      <h1 style="font-style: italic; font-family: Latin Modern Roman 10;">{% if tiempo_AM_PM == "AM" %}
             <strong>Buenos días</strong>
         {% else %}
             <strong>Buenas tardes</strong>
@@ -76,7 +78,7 @@
     </h1>
      
      <h3>
-      <p style="color:black; "><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales, Su correo es: {{ request.user.email }}"></span></p>
+      <p style="color:black; font-style: italic; font-family: Latin Modern Roman 10;"><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales, Su correo es: {{ request.user.email }}"></span></p>
      </h3> 
       
     </div>
@@ -100,6 +102,8 @@
 
     .content h6 {
         color: black;
+        font-style: italic; 
+        font-family: Latin Modern Roman 10;
     }
 
     /* INICIO Animación personalizada */
@@ -152,7 +156,7 @@
             <div class=""><!--content-->
               <div  class="" >
                     <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
-                        <img src="{{ request.user.get_image }}" class="img-fluid mb-1 img-thumbnail elevation-1" alt="white sample" style="width:300px; height:300px; display:block; margin:auto; outline:none;">
+                        <img src="{{ request.user.get_image }}" class="img-fluid mb-1 img-thumbnail elevation-1 img" alt="white sample" style="width:300px; height:300px; display:block; margin:auto; outline:none;">
                     </a>
                 </div>
               <!--<div class="text-center">
@@ -206,7 +210,7 @@
                 <div class="col-xl-3 d-flex  animated animatedFadeInUp fadeInUp"  data-aos-delay="300" >
                   <div class="icon-box mt-4 mt-xl-0 content">
                    
-                    <h6><strong>LogIn Fallidos</strong></h6>
+                    <h6><strong>Login Fallidos</strong></h6>
                     <p>{{ request.user.intentos_fallidos }}</p>
                    <br>
                    <br>
@@ -220,7 +224,7 @@
                 <div class="col-xl-3 d-flex  animated animatedFadeInUp fadeInUp"  data-aos-delay="300">
                   <div class="icon-box mt-4 mt-xl-0 content">
                    
-                    <h6><strong>Último LogIn</strong></h6>
+                    <h6><strong>Último Login</strong></h6>
                     <p>{{ request.user.fch_ultimo_login }}</p>
                    <br>
                     <h6><strong>Último cambio contraseña</strong></h6>

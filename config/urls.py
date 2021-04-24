@@ -14,11 +14,12 @@ from config.test import *
 from core.login.views import *
 
 # Importanto para inicio usuario
-from core.Usuario.urls import *
+from core.Usuario.urls.usuario.urls import *
+from core.Usuario.urls.perfiles_roles.urls import *
 
 # Para imagenes 
 from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls.static import static 
 
 
 
@@ -33,7 +34,10 @@ urlpatterns = [
     path('login/',include('core.login.urls'), name='inicio_sesion'),
 
     # Para pantalla inicial luego de iniciar sesión de Usuario
-    path('usuario/',include('core.Usuario.urls'), name='perfil_inicio'),
+    path('usuario/',include('core.Usuario.urls.usuario.urls'), name='perfil_inicio'),
+
+    # Para pantalla inicial luego de iniciar sesión de Usuario
+    path('perfilesUsuario/',include('core.Usuario.urls.perfiles_roles.urls'), name='perfiles_de_usuarios'),
 
     # Link para pruebas borrar en producción 
     path('prueba/', vista_prueba.as_view()),

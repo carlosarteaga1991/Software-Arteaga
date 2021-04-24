@@ -153,6 +153,7 @@ function usuario(e) {
 
 // INICIO VALIDAR nombre
 function nombre(e) {
+    alert();
     var key = e.keyCode || e.which,
     tecla = String.fromCharCode(key).toLowerCase(),
     letras = " áéíóúabcdefghijklmnñopqrstuvwxyz",
