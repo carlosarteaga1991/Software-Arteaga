@@ -8,91 +8,172 @@
 
 
 <style>
-.slider {
-        width: 95%;
-        height: 100%;
-        margin: auto;
-        overflow: hidden;
-    }
+    .slider {
+            width: 95%;
+            height: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
 
-.slider ul {
-        padding: 0;
-        display: flex; /*para colocarlas una al lado de la otra*/
-        width: 400%; /*x son 4 imágenes */
+    .slider ul {
+            padding: 0;
+            display: flex; /*para colocarlas una al lado de la otra*/
+            width: 400%; /*x son 4 imágenes */
 
-        animation: cambio 20s infinite;
-        animation-direction: alternate;
-        animation-timing-function: ease-in;
-    }
+            animation: cambio 20s infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in;
+        }
 
-.slider li {
-        list-style: none;
-        width: 100%;/*no afecta*/
-    }
+    .slider li {
+            list-style: none;
+            width: 100%;/*no afecta*/
+        }
 
-.slider img {
-        width:100%; 
-        /*height:120px; 
-        display:block; 
-        margin:auto;*/
-        border-radius: 5px;
-    }
+    .slider img {
+            width:100%; 
+            /*height:120px; 
+            display:block; 
+            margin:auto;*/
+            border-radius: 5px;
+        }
 
-/*
-    .slider:nth-child(2) ul {
-        display: flex; 
-        padding: 0%
-        width: 100%;
+    /*
+        .slider:nth-child(2) ul {
+            display: flex; 
+            padding: 0%
+            width: 100%;
 
-        animation: cambio 20s infinite;
-        animation-direction: alternate;
-        animation-timing-function: ease-in;
-    }*/
-@keyframes cambio {
-        /*el timepo de cambio de cada imagen es de un segundo*/
-        0% { margin-left: 0; }
-        20% { margin-left: 0; }
-        /*la segunda imagen estará 4 segundos y la primera un segundo*/
-        25% { margin-left: -100%; }
-        45% { margin-left: -100%; }
+            animation: cambio 20s infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in;
+        }*/
+    @keyframes cambio {
+            /*el timepo de cambio de cada imagen es de un segundo*/
+            0% { margin-left: 0; }
+            20% { margin-left: 0; }
+            /*la segunda imagen estará 4 segundos y la primera un segundo*/
+            25% { margin-left: -100%; }
+            45% { margin-left: -100%; }
 
-        50% { margin-left: -200%; }
-        70% { margin-left: -200%; }
+            50% { margin-left: -200%; }
+            70% { margin-left: -200%; }
 
-        75% { margin-left: -300%; }
-        100% { margin-left: -300%; }
-    }
+            75% { margin-left: -300%; }
+            100% { margin-left: -300%; }
+        }
 
 
 </style>
 
 <div class="card-body">
 
-<section id="" class="d-flex flex-column justify-content-center align-items-center" >
-    <div class="hero-container" data-aos="fade-in" style="width: 55%; text-align: center;: center;">
-      <h1 style="font-style: italic; font-family: Latin Modern Roman 10;">{% if tiempo_AM_PM == "AM" %}
-            <strong>Buenos días</strong>
-        {% else %}
-            <strong>Buenas tardes</strong>
-        {% endif %} 
-    </h1>
-     
-     <h3>
-      <p style="color:black; font-style: italic; font-family: Latin Modern Roman 10;"><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales, Su correo es: {{ request.user.email }}"></span></p>
-     </h3> 
-      
+<section class="row" ><!--d-flex flex-column justify-content-center align-items-center-->
+    <div class="col-xl-12 d-flex  animated animatedFadeInUp fadeInUp ">
+        <div>
+            <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
+                <img src="{{ request.user.get_image }}" class="img-fluid mb-1 img-thumbnail elevation-1 img" alt="white sample" style="width:150px; height:150px; display:block; margin:auto; outline:none;">
+            </a>
+        </div>
+        <div  style="width: 55%; text-align: center;">
+            <h1 style="font-style: italic; font-family: Latin Modern Roman 10;">{% if tiempo_AM_PM == "AM" %}
+                    <strong>Buenos días</strong>
+                {% else %}
+                    <strong>Buenas tardes</strong>
+                {% endif %} 
+            </h1>
+        
+            <h3>
+                <p style="color:black; font-style: italic; font-family: Latin Modern Roman 10;"><span  class="typed" data-typed-items="{{ request.user.nombres }}  {{ request.user.apellidos }}, Visualiza tus datos generales."></span></p>
+            </h3> 
+        
+        </div>
     </div>
 </section>
 
 
+
 <style>
+    /* iINICO efecto hover al colocar mouse*/
+    .contenedor {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 44vh;
+    }
+
+    .contenedor figure{
+        position: relative;
+        height: 250px;
+        width: 350px;
+        overflow: hidden;
+        border-radius: 6px;
+        box-shadow: 0px 15px 25px rgba(0,0,0,0.50);
+        cursor: pointer;
+    }
+
+    .contenedor figure img{
+        width: 100%;
+        height: 100%;
+        transition: all 500ms ease-out;
+    }
+
+    .contenedor figure .contenedor-hijo{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,103,123,0.6);
+        transition: all 500ms ease-out;
+        opacity: 0;
+        visibility: hidden;
+        text-align: center;
+    }
+
+    .contenedor figure:hover > .contenedor-hijo{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .contenedor figure:hover > .contenedor-hijo h3{
+        margin-top: 70px;
+        margin-bottom: 15px;
+    }
+
+    .contenedor figure:hover > img{
+        transform: scale(1.3);
+    }
+
+    .contenedor figure .contenedor-hijo h3{
+        color: #fff;
+        font-weight: 400;
+        margin-bottom: 120px;
+        transition: all 500ms ease-out;
+        margin-top: 30px;
+    }
+
+    .contenedor figure .contenedor-hijo p{
+        color: #fff;
+        font-size: 22px;
+        line-height: 1.5;
+        width: 100%;
+        max-width: 220px;
+        margin: auto;
+    }
+
+        
+
+    /* FIN efecto hover al colocar mouse*/
+
+
     .content {
         padding: 30px;
         padding-left: 4%;
         border-width: 3px;
         border-style: solid;
-        border-color: #6CA3FC;
-        background-color: white;/*#6CA3FC;*/
+        /*border-color: #6CA3FC;
+        background-color: #A9C9FE;*/
       
         border-radius: 5px;
         color: black;
@@ -148,27 +229,98 @@
     }
     /* FIN Animación personalizada */
 </style>
-<section  class="why-us">
-      <div class="container">
+
+<!-- INICIO sección para home -->
+
+    <div class="row" >
+        <div class="col-xl-12 d-flex  animated animatedFadeInUp fadeInUp " >
+            <!--PRIMER DIV-->
+                <div class="col-xl-4" >
+                    <div class="contenedor">
+                        <figure>
+                            <img src="{% static 'img/img_home/usuario.jpg' %}" alt="">
+                            <div class="contenedor-hijo">
+                            <h3><strong>Departamento:</strong> {{ departamento.nombre }}</h3>
+                            <p> <strong>Puesto:</strong> {{ puesto.nombre }}</p>
+                            </div>
+                        </figure>
+                    </div>
+                </div> 
+            <!--/. PRIMER DIV-->
+
+            <!-- SEGUNDO DIV-->
+                <div class="col-xl-4" >
+                    <div class="contenedor">
+                        <figure>
+                            <img src="{% static 'img/img_home/trabajo_equipo.jpg' %}" alt="">
+                            <div class="contenedor-hijo">
+                            <h3 style="font-size: 22px;"><strong>Correo:</strong> {{ request.user.email }}</h3>
+                            <p> <strong>inicio de Sesión Fallidos:</strong> {{ request.user.intentos_fallidos }} </p>
+                            </div>
+                        </figure>
+                    </div>
+                </div> 
+            <!--/. SEGUNDO DIV-->
+
+            <!--TERCER DIV-->
+                <div class="col-xl-4" >
+                    <div class="contenedor">
+                        <figure>
+                            <img src="{% static 'img/img_home/login.jpg' %}" alt="">
+                            <div class="contenedor-hijo">
+                            <h3 style="font-size: 22px;"><strong>Próximo cambio contraseña:</strong> {{ request.user.fch_cambio_password.year }}/{% if request.user.fch_cambio_password.month < 10 %}
+                                0{{ request.user.fch_cambio_password.month }}
+                                {% else %}
+                                {{ request.user.fch_cambio_password.month }}
+                                {% endif %}/{% if request.user.fch_cambio_password.day < 10 %}
+                                0{{ request.user.fch_cambio_password.day }}}
+                                {% else %}
+                                {{ request.user.fch_cambio_password.day }}
+                                {% endif %}
+                            </h3>
+                            <p > <strong>Laborando desde:</strong> {{ request.user.fch_ingreso_labores.year }}/{% if request.user.fch_ingreso_labores.month < 10 %}
+                                0{{ request.user.fch_ingreso_labores.month }}
+                                {% else %}
+                                {{ request.user.fch_ingreso_labores.month }}
+                                {% endif %}/{% if request.user.fch_ingreso_labores.day < 10 %}
+                                0{{ request.user.fch_ingreso_labores.day }}
+                                {% else %}
+                                {{ request.user.fch_ingreso_labores.day }}
+                                {% endif %}
+                            </p>
+                            </div>
+                        </figure>
+                    </div>
+                </div> 
+            <!--/. TERCER DIV-->
+        </div>
+    </div>
+
+<!-- FIN sección para home -->
+
+
+<!--<section  class="why-us">
+      <div class=" ">
 
         <div class="row" >
-          <div class="col-xl-3  animated animatedFadeInUp fadeInUp">
-            <div class=""><!--content-->
+          <div class="col-xl-3  animated animatedFadeInUp fadeInUp ">
+            <div class="">
               <div  class="" >
                     <a href="{{ request.user.get_image }}" data-toggle="lightbox" data-title="sample 1 - white">
                         <img src="{{ request.user.get_image }}" class="img-fluid mb-1 img-thumbnail elevation-1 img" alt="white sample" style="width:300px; height:300px; display:block; margin:auto; outline:none;">
                     </a>
                 </div>
-              <!--<div class="text-center">
+              <div class="text-center">
                 <a href="#" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
-              </div>-->
+              </div>
             </div>
           </div>
-          <div class="col-xl-9 d-flex" >
-            <div class=" d-flex flex-column justify-content-center" >
+          <div class="col-xl-9 d-flex " >
+            <div class=" d-flex flex-column justify-content-center " >
               <div class="row">
-                <div class="col-xl-3 d-flex animated animatedFadeInUp fadeInUp" data-aos-delay="100" >
-                  <div class="icon-box mt-4 mt-xl-0 content" >
+              
+                <div class="col-xl-3 d-flex animated animatedFadeInUp fadeInUp " data-aos-delay="100" >
+                  <div class="icon-box mt-4 mt-xl-0 content efecto_mouse" >
               
                     <h6><strong>Departamento&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></h6>
                     <p>{{ departamento.nombre }}</p>
@@ -195,7 +347,7 @@
                     {% endif %}</p>
                     <br>
                     <br>
-                    <h6><strong>Próximo cambio contraseña</strong></h6>
+                    <h6><strong>Próximo cambio de contraseña</strong></h6>
                     <p>{{ request.user.fch_cambio_password.year }}/{% if request.user.fch_cambio_password.month < 10 %}
                     0{{ request.user.fch_cambio_password.month }}
                     {% else %}
@@ -227,7 +379,7 @@
                     <h6><strong>Último Login</strong></h6>
                     <p>{{ request.user.fch_ultimo_login }}</p>
                    <br>
-                    <h6><strong>Último cambio contraseña</strong></h6>
+                    <h6><strong>Último cambio de contraseña</strong></h6>
                     <p>{{ request.user.fch_ultimo_cambio_contrasenia}}</p>
                  
 
@@ -239,7 +391,7 @@
         </div>
 
       </div>
-</section>
+</section>-->
 
 
     <!--<div class="row" >
@@ -280,6 +432,8 @@
         </div>
     </div>-->
 <br>
+
+
 
 
 <div class="">
