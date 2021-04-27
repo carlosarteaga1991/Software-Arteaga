@@ -139,6 +139,7 @@ class usuario(AbstractBaseUser):
 class pantallas(models.Model):
     id_pantalla = models.AutoField(primary_key=True)
     nombre = models.CharField('Pantalla',max_length=50, unique=True)
+    estado = models.CharField(max_length=1, default='1',choices=[('1','Activo'),('2','Inactivo')])
 
     class Meta:
         verbose_name_plural = "pantallas"
@@ -179,8 +180,8 @@ class politicas_contrasenia(models.Model):
     longitud_minima_contrasenia = models.IntegerField(default=8,validators=[MinValueValidator(8), MaxValueValidator(25)],verbose_name="Longitud Mínima")
     longitud_maxima_contrasenia = models.IntegerField(default=25,validators=[MinValueValidator(25), MaxValueValidator(50)],verbose_name="Longitud Máxima")
     complejidad_contrasenia = models.CharField(max_length=1, default='4',
-    choices=[('1','Incluir letras mayúsculas y minúsculas, números y caracteres especiales'),
-             ('2','Incluir letras mayúsculas y minúsculas, números'),
+    choices=[('1','Incluir letras mayúsculas, minúsculas, números y caracteres especiales'),
+             ('2','Incluir letras mayúsculas, minúsculas y números'),
              ('3','Incluir letras minúsculas, números'),
              ('4','Sin Restricciones')],verbose_name="Complejidad de Contraseña")
     intentos_sesion_maximo = models.IntegerField(default=3,validators=[MinValueValidator(3), MaxValueValidator(10)],verbose_name="Intentos Máximos de Inicio de Sesión")

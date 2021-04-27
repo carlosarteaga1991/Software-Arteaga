@@ -4,7 +4,7 @@ Fecha: 08 de abril del 2021 hora: 06:08 am
 Última modificación a código
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path,include, re_path
 from core.homepage.views import IndexView
 
 # Importanto para login
@@ -31,10 +31,12 @@ urlpatterns = [
     path('listar/',listar_usuarios.as_view(), name='listar_usuarios'), 
 
     # Para editar usuarios (SÍ requiere permisos)
+    #path(r'^editar/(?P<int:pk>\d+)/$',editar_usuario.as_view(), name='editar_usuarios'), 
     path('editar/<int:pk>/',editar_usuario.as_view(), name='editar_usuarios'), 
 
     # Para borrar usuarios (SÍ requiere permisos)
-    path('borrar/<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'),
+    #path(r'^borrar/(?P<int:pk>\d+)/$',borrar_usuario.as_view(), name='borrar_usuarios'),
+    path('borrar/(<int:pk>/',borrar_usuario.as_view(), name='borrar_usuarios'),
 
     # Para crear usuarios (SÍ requiere permisos)
     path('crear/',crear_usuario.as_view(), name='crear_usuarios'), 

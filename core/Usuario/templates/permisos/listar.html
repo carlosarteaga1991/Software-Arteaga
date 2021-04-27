@@ -1,0 +1,108 @@
+
+{% extends "listar_principal.html" %}
+{% load humanize %}
+{% load widget_tweaks %} 
+{% load static %}
+
+
+
+{% block columnas %}
+
+
+        <tr>
+                        <th scope="col" style="width: 16%; text-align:center">Tipo de Perfil</th>
+                        <th scope="col" style="width: 15%; text-align:center">Acceso a:</th>
+                        <th scope="col" style="width: 12%; text-align:center">¿Visualizar?</th>
+                        <th scope="col" style="width: 12%; text-align:center">¿Crear?</th>
+                        <th scope="col" style="width: 12%; text-align:center">¿Editar?</th>
+                        <th scope="col" style="width: 12%; text-align:center">¿Borrar?</th>
+                        <th scope="col" style="width: 8%; text-align:center">Estatus</th>
+                        <th scope="col" style="width: 10%; text-align:center">Opciones</th>
+    </tr>
+
+                    
+{% endblock  %}  
+
+
+{% block filas %}
+
+    {% for x in object_list %}
+                            <tr>
+                                <td>{{ x.id_rol }} </td>
+                                <td style="text-align:center">{{ x.pantalla.nombre }} </td>
+                                <td style="text-align:center">{% if x.ver == 1 %}
+                                    <strong style="color: green;">Sí</strong>
+                                {% else %}
+                                    <strong style="color: red;">No</strong>
+                                {% endif %}</td><td style="text-align:center">{% if x.crear == 1 %}
+                                    <strong style="color: green;">Sí</strong>
+                                {% else %}
+                                    <strong style="color: red;">No</strong>
+                                {% endif %}</td>
+                                <td style="text-align:center">{% if x.actualizar == 1 %}
+                                    <strong style="color: green;">Sí</strong>
+                                {% else %}
+                                    <strong style="color: red;">No</strong>
+                                {% endif %}</td>
+                                <td style="text-align:center">{% if x.borrar == 1 %}
+                                    <strong style="color: green;">Sí</strong>
+                                {% else %}
+                                    <strong style="color: red;">No</strong>
+                                {% endif %}</td>
+                                <td style="text-align:center">{% if x.estado == '1' %}
+                                    <strong style="color: green;">Activo</strong>
+                                {% else %}
+                                    <strong style="color: red;">Inactivo</strong>
+                                {% endif %}</td>
+                                <td style="text-align:center"> 
+                                    <a href="{% url 'permisos:editar_permisos' x.id_permiso %}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'permisos:borrar_permisos' x.id_permiso %}"  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+        {% if permisos.ver_pantalla == 0 %}
+            <div class="card-body">
+                    <div class="alert alert-warning fade in alert-dismissible show" style="margin-top:18px; font-size:20px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+                    </button>    <strong>¡No cuenta con los permisos necesarios para visualizar esta opción!</strong> <br>Comuníquese con el administrador del sistema.
+                    </div>
+                </div>
+      
+        {% endif %} 
+                     
+                        
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+    $(function () {
+    $('#data').DataTable({
+        order: [[ 0, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        "language": {
+                        url: '{% static 'lib/DataTables/spanish.txt' %}'
+                        },
+        destroy: true,
+        deferRender: true,
+            
+        initComplete: function (settings, json) {
+
+        }
+        });
+    });
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

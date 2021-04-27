@@ -22,9 +22,14 @@
 <div class="card-body">
 
     <!-- Botón para crear nuevo -->
+      {% if mostrar_btn_crear == 'no' %}
+        
+      {% else %}
         <a href="{{ create_url }}" class = "btn btn-xs btn-primary float-right eventoAjax" >
-            <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
-        </a>
+              <i class="fas fa-plus"></i> <strong>Nuevo Resgistro</strong>
+          </a>
+      {% endif %}
+
     <!-- /. Botón para crear nuevo -->
 
     <!-- Botón para volver -->

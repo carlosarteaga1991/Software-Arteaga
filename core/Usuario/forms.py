@@ -233,3 +233,77 @@ class form_roles(ModelForm):
             )
     
         }
+
+class form_permisos(ModelForm):
+    user = permisos.objects.filter(borrado=0,estado=1)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        self.fields['pantalla'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = permisos
+        
+        fields = '__all__'
+        # si deseo excluir ciertos campos coloco
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion','borrado','tiene_permisos']
+
+        widgets = {
+            'pantalla': TextInput(
+                attrs={
+                    'placeholder': 'Ingrese el nombre del perfil',
+                    'onkeypress': 'return nombre(event)',
+                }
+            )
+    
+        }
+
+class form_politicas_contrasenia(ModelForm):
+    user = politicas_contrasenia.objects.all()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+        #self.fields['pantalla'].widget.attrs['autofocus'] = True
+
+    class Meta():
+        model = politicas_contrasenia
+        
+        fields = '__all__'
+        # si deseo excluir ciertos campos coloco
+        exclude = ['fch_modificacion','usuario_modificacion','usuario_creacion']
+
+        
+        widgets = {
+            'longitud_minima_contrasenia': NumberInput(
+                attrs={
+                    'min': '5',
+                    'max': '10',
+                }
+            ),
+            'longitud_maxima_contrasenia': NumberInput(
+                attrs={
+                    'min': '10',
+                    'max': '20',
+                }
+            ),
+            'dias_expiracion_contrasenia': NumberInput(
+                attrs={
+                    'min': '30',
+                    'max': '360',
+                }
+            ),
+            'intentos_sesion_maximo': NumberInput(
+                attrs={
+                    'min': '3',
+                    'max': '10',
+                }
+            )
+    
+        }
+        

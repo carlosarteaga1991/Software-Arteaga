@@ -1,0 +1,98 @@
+
+{% extends "listar_principal.html" %}
+{% load humanize %}
+{% load widget_tweaks %} 
+{% load static %}
+
+
+
+{% block columnas %}
+
+
+        <tr>
+                        <th scope="col" style="width: 16%; text-align:center">Días de Expiración</th>
+                        <th scope="col" style="width: 15%; text-align:center">Longitud MAX</th>
+                        <th scope="col" style="width: 12%; text-align:center">Longitud MIN</th>
+                        <th scope="col" style="width: 12%; text-align:center">Login Fallidos</th>
+                        <th scope="col" style="width: 12%; text-align:center">Complejidad</th>
+                        <th scope="col" style="width: 12%; text-align:center">Opción</th>
+    </tr>
+
+                    
+{% endblock  %}  
+
+
+{% block filas %}
+
+    {% for x in object_list %}
+                            <tr>
+                                <!--<td>{{ x.id_politica }} </td>-->
+                                <td style="text-align:center">{{ x.dias_expiracion_contrasenia }} </td>
+                                <td style="text-align:center">{{ x.longitud_maxima_contrasenia }} </td>
+                                <td style="text-align:center">{{ x.longitud_minima_contrasenia }} </td>
+                                <td style="text-align:center">{{ x.intentos_sesion_maximo }} </td>
+                                <td style="text-align:center"> {% if  x.complejidad_contrasenia  == "1" %}
+                                    Incluir letras mayúsculas, minúsculas, números y caracteres especiales.
+                                {% else %}
+                                    {% if   x.complejidad_contrasenia  == "2" %}
+                                        Incluir letras mayúsculas, minúsculas y números.
+                                    {% else %}
+                                        {% if  x.complejidad_contrasenia  == "3" %}
+                                            Incluir letras minúsculas,y números.
+                                        {% else %}
+                                            Sin Restricciones.
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %} </td>
+                                <td style="text-align:center"> 
+                                    <a href="{% url 'politicas_contrasenia:editar_politicas_contrasenia' x.id_politica %}" class="btn btn-xs btn-warning" title="Editar"><i class="fas fa-edit"></i></a>
+                                    <!--<a href=""  class="btn btn-xs btn-danger btn-borrar" title="Borrar" ><i class="fas fa-trash-alt"></i></a>-->
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+        {% if permisos.ver_pantalla == 0 %}
+            <div class="card-body">
+                    <div class="alert alert-warning fade in alert-dismissible show" style="margin-top:18px; font-size:20px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+                    </button>    <strong>¡No cuenta con los permisos necesarios para visualizar esta opción!</strong> <br>Comuníquese con el administrador del sistema.
+                    </div>
+                </div>
+      
+        {% endif %} 
+                     
+                        
+
+{% endblock  %}
+
+{% block javascript %}
+
+   
+    <script type="application/javascript">
+
+    $(function () {
+    $('#data').DataTable({
+        order: [[ 0, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        "language": {
+                        url: '{% static 'lib/DataTables/spanish.txt' %}'
+                        },
+        destroy: true,
+        deferRender: true,
+            
+        initComplete: function (settings, json) {
+
+        }
+        });
+    });
+
+        
+    </script>
+   
+
+
+
+
+{% endblock  %}

@@ -100,14 +100,7 @@ class crear_roles(LoginRequiredMixin,CreateView):
 
         try:
             #if form.is_valid():
-                # INICIO para log
-                try:
-                    if form.is_valid():
-                        x = trigger.guardar(str(request.user.nombres) + " " + str(request.user.apellidos), "roles",str(request.user.id),"Crear","",str(request.POST['nombre']),"nombre de perfil",trigger.get_ip(request),str(request.user.username))                        
-
-                except Exception as e:
-                    pass
-                # FIN para log
+                
 
                 nuevo = roles(
                     nombre = request.POST['nombre'],
@@ -115,6 +108,15 @@ class crear_roles(LoginRequiredMixin,CreateView):
                     usuario_creacion = int(request.user.id)
                 )
                 nuevo.save()
+                # INICIO para log
+                try:
+                    #if form.is_valid():
+                    id_rol_new = roles.objects.get(nombre=str(request.POST['nombre']))
+                    x = trigger.guardar(str(request.user.nombres) + " " + str(request.user.apellidos), "roles",str(id_rol_new.id_rol),"Crear","",str(request.POST['nombre']),"nombre de perfil",trigger.get_ip(request),str(request.user.username))                        
+
+                except Exception as e:
+                    pass
+                # FIN para log
                 return redirect('perfiles_roles:listar_perfiles_roles') 
             #else:
                 

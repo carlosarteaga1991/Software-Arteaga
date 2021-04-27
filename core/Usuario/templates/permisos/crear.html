@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+
+{% block contenido %}
+<div class="card-body">
+    <form method="POST" action="." style="padding-top: 6%"> <!-- para trabajar  con archivos media usamos: enctype="multipart/form-data" -->
+        <div class="card card-primary" >
+            <div class="" style=" color: blue; font-size: 11px; height: 22px; ">
+                <h3 class="card-title" style="color: #3371FF">
+                    &nbsp;<i class="fas fa-plus" style="font-size: 15px;"></i>
+                    <strong >{{ titulo_lista }}</strong> 
+                </h3>
+            </div>
+            <div class="card-body"> 
+                {% csrf_token %}
+
+                <!-- verificaciones de errores antes de guardar -->
+                    {% if ya_existe == 'si' %}
+                        <div class="alert alert-danger alert-dismissible" style="font-size: 12px;">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta de Error!</h5>
+                            
+                            <ul>
+
+                                <li>Ya existe un permiso para la pantalla que ha seleccionado anteriormente, debe buscarla y editar los permisos deseados.</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                <!-- /. verificaciones de errores antes de guardar -->
+                <!--<p style="color:red; font-size:10px; font-family: 'Verdana'; align='left'">*Al crear un usuario nuevo, éste tendrá que ingresar su mismo usuario como contraseña ÚNICAMENTE por primera vez.
+                   <br> *Campo obligatorio.</p>-->
+
+
+                <div class="form-group" >
+                    <label style="font-size: 13px; ">&nbsp;Tipo de Perfil:</label>
+                    <select name="id_rol" id="id_rol" required style="background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;" >
+                        <option value="">-----      Seleccione    -----</option>
+                            {% for yy in rol %}
+                        <option value="{{ yy.id_rol }}" >{{ yy.nombre }}</option>    
+                            {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size: 13px; ">&nbsp;Pantalla de Acceso:</label>
+                    <select name="pantalla" id="pantalla" required style=" background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 100%; height: 37px;">
+                            <option  value="" >-----      Seleccione    -----</option>
+                            {% for x in pantalla %}
+                        <option value="{{ x.id_pantalla }}" >{{ x.nombre }}</option>    
+                            {% endfor %}
+
+                    </select>
+                </div>
+
+                    <div class="form-group" style="font-size: 12px;">
+                        <label for="email">Permisos:</label>
+                        <br>
+                        <label style="position: absolute; left:8%; top: 76%;">Visualizar:</label>
+                        <select name="ver" id="ver" required style="position: absolute; left:15%;  background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 5%; height: 37px;">
+                            <option  value="0" >No</option>
+                            <option  value="1" >Sí</option>
+                        </select>
+                        <label style="position: absolute; left:30%; top: 76%;">Crear:</label>
+                        <select name="crear" id="crear" required style="position: absolute; left:35%;  background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 5%; height: 37px;">
+                            <option  value="0" >No</option>
+                            <option  value="1" >Sí</option>
+                        </select>
+                        <label style="position: absolute; left:50%; top: 76%;">Editar:</label>
+                        <select name="actualizar" id="actualizar" required style="position: absolute; left:55%;  background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 5%; height: 37px;">
+                            <option  value="0" >No</option>
+                            <option  value="1" >Sí</option>
+                        </select>
+                        <label style="position: absolute; left:70%; top: 76%;">Borrar:</label>
+                        <select name="borrar" id="borrar" required style="position: absolute; left:75%;  background-color: #fff; font-size: 13px; font-family: 'Verdana', sans-serif; border: 1px solid silver; border-radius: 4px; width: 5%; height: 37px;">
+                            <option  value="0" >No</option>
+                            <option  value="1" >Sí</option>
+                        </select>
+
+                    </div>
+                
+
+
+                
+            </div>
+
+            <!-- Botón para guardar nuevo -->
+            <div class = "card-footer" >
+                    <button type="submit" class = "btn btn-xs btn-primary float-right eventoAjax" >
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+
+                <a href="{{ btn_cancelar }}" class = "btn btn-xs btn-danger" style="position: absolute; right: 125px;">
+                    <i class="fas fa-times"></i></i> Cancelar
+                </a> 
+               
+            </div>
+            <!--/. Botón para guardar nuevo -->
+        </div>
+    </form>
+
+</div>
+{% endblock  %}
+ 
+{% block javascript %}
+
+<script type="application/javascript">
+
+
+    // INICIO VALIDAR nombre
+        function nombre(e) {
+            var key = e.keyCode || e.which,
+            tecla = String.fromCharCode(key).toLowerCase(),
+            letras = " áéíóúabcdefghijklmnñopqrstuvwxyz",
+            especiales = [],
+            tecla_especial = false;
+
+            for (var i in especiales) {
+            if (key == especiales[i]) {
+                tecla_especial = true;
+                break;
+            }
+            }
+
+            if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+            return false;
+            }
+        }
+    // FIN VALIDAR nombre
+
+    // INICIO VALIDAR USUARIO
+        var anterior = 0;
+        var contador = 0;
+        function usuario(e) {
+            var key = e.keyCode || e.which,
+            tecla = String.fromCharCode(key).toLowerCase(),
+            letras = "abcdefghijklmnñopqrstuvwxyz",
+            especiales = [],
+            tecla_especial = false;
+            anterior = key;
+            //alert(contador);
+
+            for (var i in especiales) {
+            if (key == especiales[i]) {
+                if (46 == anterior && contador==2) {
+                    tecla_especial = false;
+                    contador += 1;
+                }else {
+                    tecla_especial = true;
+                break;
+                }
+                
+            }
+            }
+
+            if (letras.indexOf(tecla) == -1 && !tecla_especial) {
+            return false;
+            }
+        }
+    // FIN VALIDAR USUARIO
+    
+
+    // INICIO SELECT ANIDADO
+        $("#id_puesto").chained("#id_departamento"); 
+    // FIN SELECT ANIDADO
+
+    // VALIDAR CORREO
+        document.getElementById('id_email').addEventListener('input', function() {
+            campo = event.target;
+            campo2 = event.target;
+            valido = document.getElementById('emailOK');
+            invalido = document.getElementById('emailnoOK');
+                
+            emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+            if (emailRegex.test(campo.value)) {
+            valido.innerText = "Válido";
+            invalido.innerText = "";
+            } 
+
+            if (emailRegex.test(campo2.value)) {
+
+            } else {
+            invalido.innerText = "Incorrecto";
+            valido.innerText = "";
+            }
+            
+        });
+    //FIN VALIDAR CORREO
+
+    </script>
+{% endblock  %}
